@@ -118,6 +118,7 @@ tap "caskroom/fonts"
 
 # Casks
 cask "font-fira-code"
+cask "pritunl"
 
 # Mac App Store
 mas "Helium", id: 1054607607
