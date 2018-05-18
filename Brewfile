@@ -1,7 +1,6 @@
 cask_args appdir: "/Applications"
 
 # Homebrew recipes
-
 brew "ansible"
 brew "apr"
 brew "aria2"
