@@ -121,7 +121,9 @@ tap "caskroom/fonts"
 # Casks
 cask "font-fira-code"
 cask "pritunl"
-
+cask "visual-studio-code"
+cask "spotify"
+cask "shiftit"
 # Mac App Store
 mas "Helium", id: 1054607607
 mas "iHex", id: 909566003
