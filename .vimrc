@@ -174,7 +174,10 @@ set complete+=kspell
 " Always use vertical diffs
 set diffopt+=vertical
 
+let vim_markdown_preview_github=1
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
