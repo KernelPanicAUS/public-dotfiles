@@ -6,6 +6,7 @@ tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "wata727/tflint"
+tap "KernelPanicAUS/aliyun-cli"
 
 # Homebrew recipes
 brew "aliyun-cli"
