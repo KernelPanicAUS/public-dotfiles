@@ -3,6 +3,8 @@ osx_image: xcode10.1
 jdk:
 - oraclejdk8
 script:
+- jdk_switcher use oraclejdk8
+- java -version
 - sed -i '' '/mas "/s/^/#/g' Brewfile
 - git diff
 - brew list -1 | xargs brew rm
