@@ -136,6 +136,7 @@ brew "yarn"
 # Casks
 cask "1password-cli"
 cask "caffeine"
+cask "corretto"
 cask "docker"
 cask "evernote"
 cask "font-fira-code"
