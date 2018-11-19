@@ -1,3 +1,5 @@
 os: osx
 osx_image: xcode10.1
-script: brew bundle
+script:
+- brew update
+- brew bundle
