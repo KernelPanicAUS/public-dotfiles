@@ -3,6 +3,7 @@ osx_image: xcode10.1
 script:
 - sed -i '' '/mas "/s/^/#/g' Brewfile
 - git diff
+- brew list -1 | xargs brew rm
 - brew config
 - brew update
 - brew bundle
