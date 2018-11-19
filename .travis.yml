@@ -1,5 +1,7 @@
 os: osx
 osx_image: xcode10.1
+jdk:
+- oraclejdk8
 script:
 - sed -i '' '/mas "/s/^/#/g' Brewfile
 - git diff
