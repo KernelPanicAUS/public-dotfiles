@@ -1,5 +1,8 @@
 os: osx
 osx_image: xcode10.1
 script:
+- sed -i '' '/mas "/s/^/#/g' Brewfile
+- git diff
+- brew config
 - brew update
 - brew bundle
