@@ -7,7 +7,7 @@ script:
 - java -version
 - sed -i '' '/mas "/s/^/#/g' Brewfile
 - git diff
-- rm -f /usr/local/Cellar/*
+- rm -rf /usr/local/Cellar/*
 - brew prune
 - brew config
 - brew update
