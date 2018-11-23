@@ -7,7 +7,7 @@ script:
 - java -version
 - sed -i '' '/mas "/s/^/#/g' Brewfile
 - git diff
-- brew list -1 | xargs brew rm
+- brew list -1 | xargs brew uninstall
 - brew config
 - brew update
 - brew bundle
