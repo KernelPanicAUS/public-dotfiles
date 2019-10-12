@@ -7,8 +7,10 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "wata727/tflint"
 tap "KernelPanicAUS/aliyun-cli"
+tap "rukenshia/repo"
 
 # Homebrew recipes
+brew "saml2aws-auto"
 brew "aliyun-cli"
 brew "ansible"
 brew "apr"
