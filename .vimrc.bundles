@@ -15,19 +15,42 @@ let g:has_async = v:version >= 800 || has('nvim')
 call plug#begin('~/.vim/bundle')
 
 " Define bundles via Github repos
+Plug 'Quramy/tsuquyomi'
+Plug 'Raimondi/delimitMate'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-run-interactive'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ekalinin/Dockerfile.vim'
 Plug 'elixir-lang/vim-elixir'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'godlygeek/tabular'
+Plug 'groenewege/vim-less'
+Plug 'hashivim/vim-terraform'
+Plug 'itchyny/lightline.vim'
 Plug 'janko-m/vim-test'
+Plug 'juliosueiras/vim-terraform-completion'
+Plug 'junegunn/goyo.vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'mhartington/vim-typings'
+Plug 'mhinz/vim-startify'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'pbrisbin/vim-mkdir'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdtree'
 Plug 'slim-template/vim-slim'
+Plug 'tmhedberg/SimpylFold'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
-Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
@@ -35,11 +58,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'vim-ruby/vim-ruby'
+Plug 'vim-scripts/Vimball'
+Plug 'vim-scripts/nginx.vim'
 Plug 'vim-scripts/tComment'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'JamshedVesuna/vim-markdown-preview'
-
+Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 if g:has_async
   Plug 'w0rp/ale'
 endif
