@@ -209,6 +209,7 @@ set statusline+=\
 
 "let g:ycm_server_keep_logfiles = 1
 "let g:ycm_server_log_level = 'debug'
+let g:go_version_warning = 0
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

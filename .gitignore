@@ -3,4 +3,6 @@
 **/.terraform
 .DS_STORE
 **/x-local/
-
+node_modules/
+*.plan
+**/*.pem
