@@ -1,0 +1,64 @@
+[color]
+  ui = auto
+[user]
+	name = Thomas Khalil
+	email = KernelPanicAUS@users.noreply.github.com
+[apply]
+  whitespace = nowarn
+[alias]
+  co = checkout
+  st = status -s -b
+  ci = commit
+  sb = show-branch
+  up = !git fetch origin && git rebase origin/master
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %f %Cgreen(%cr)%Creset'
+  who = log --format="'%ai %h %aN %s'"
+  df = difftool --dir-diff
+  ba = branch -a
+  br = branch -r
+  rpo = remote prune origin
+  undo = reset --soft HEAD~1
+  wip = commit -am WIP
+  spull = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+  spush = push --recurse-submodules=on-demand
+[branch]
+  autosetuprebase = always
+[log]
+  decorate = true
+[showbranch]
+  default = --all
+[push]
+	followTags = true
+[diff]
+	tool = diffmerge
+	submodule = log
+	wsErrorHighlight = all
+[difftool "diffmerge"]
+	cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+[core]
+	excludesfile = ~/.gitignore
+	editor = /usr/bin/vim -f
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[url "https://github"]
+	insteadOf = git://github
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[diff "sopsdiffer"]
+	textconv = sops -d
+[rebase]
+	autoStash = true
+[credential]
+	helper = !aws codecommit credential-helper $@
+	UseHttpPath = true
+[status]
+	submoduleSummary = true
+[init]
+	defaultBranch = main
+[http]
+	version = HTTP/1.1
+	postBuffer = 524288000

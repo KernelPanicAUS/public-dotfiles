@@ -6,3 +6,10 @@
 node_modules/
 *.plan
 **/*.pem
+**/.idea/**
+**/jenkins/src/main/jenkins.gdsl
+**/jenkins/src/main/**
+*.iml
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/.aws-sam/**
