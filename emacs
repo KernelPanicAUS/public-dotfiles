@@ -12,10 +12,19 @@
 
 (set-face-attribute 'default nil :font "Berkeley Mono" :height 200) ;; set font
 
-(load-theme 'doom-palenight t) ;; set theme
+(load-theme 'doom-wilmersdorf t) ;; set theme
 
-;; Set default shell
-(setq explicit-shell-file-name "/opt/homebrew/bin/bash")
+(setq vc-follow-symlinks t
+      coding-system-for-read 'utf-8
+      coding-system-for-write 'utf-8
+      sentence-end-double-space nil
+      custom-file null-device
+      byte-compile-debug t)
+
+(setq-default visible-bell nil)
+(setq ring-bell-function 'ignore
+      initial-buffer-choice t
+      initial-scratch-message nil)
 
 ;; Make ESC quit prompts
 ;;(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -58,22 +67,6 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0 ))))
 
 (use-package command-log-mode)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("5f128efd37c6a87cd4ad8e8b7f2afaba425425524a68133ac0efd87291d05874" "8c7e832be864674c220f9a9361c851917a93f921fedb7717b1b5ece47690c098" default))
- '(package-selected-packages
-   '(treemacs-icons-dired treemacs-magit treemacs-projectile visual-fill-column visual-fill org-bullets company-terraform terraform-mode forge pinentry magit counsel-projectile projectile evil general all-the-icons doom-themes helpful counsel ivy-rich which-key rainbow-delimiters doom-modeline ivy command-log-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (use-package ivy
   :diminish
@@ -282,9 +275,47 @@
 (use-package treemacs-projectile
   :after (treemacs projectile))
 (use-package treemacs-all-the-icons
-  :after (treemacs all-the-icons)
+  :after (treemacs all-the-icons))
 (use-package treemacs-magit
   :after (treemacs magit))
-  (use-package treemacs-icons-dired
-    :after (treemacs dired)
-    :hook (dired-mode . treemacs-icons-dired-enable-once))
+(use-package treemacs-icons-dired
+  :after (treemacs dired)
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
+(use-package dashboard
+  :if (display-graphic-p)
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-banner-logo-title "( E M A C S )")
+  (setq dashboard-init-info "")
+  (setq dashboard-items nil)
+  (setq dashboard-set-footer t)
+  (setq dashboard-footer-icon "")
+  (setq dashboard-footer-messages '("😈 Happy hacking!   "))
+  (define-key dashboard-mode-map (kbd "<f5>") #'(lambda ()
+                                                  (interactive)
+                                                  (dashboard-refresh-buffer)
+                                                  (message "Refreshing Dashboard...done"))))
+
+(use-package vterm
+   :load-path "/Users/tkhalil/emacs-libvterm/"
+   :config
+   (setq vterm-shell "/opt/homebrew/bin/bash"))
+
+(use-package vterm-toggle
+  :init (setq vterm-always-compile-module t)
+  :bind ("C-c C-d" . vterm-toggle-cd)
+  :config
+  (setq vterm-toggle-fullscreen-p nil)
+  (add-to-list 'display-buffer-alist '("^\\*vterm\\*$"
+				       (display-buffer-in-side-window)
+				       (window-height . 0.35)
+				       (side . bottom)
+				       (slot . -1))))
+
+(add-hook 'vterm-exit-hook (lambda () ;; Close vterm window when exiting
+                             (let* ((buffer (current-buffer))
+                                    (window (get-buffer-window buffer)))
+                               (when window
+                                 (delete-window window))
+                               (kill-buffer buffer))))
