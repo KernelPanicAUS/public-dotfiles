@@ -5,7 +5,7 @@
 (tool-bar-mode -1)     ; Disable the toolbar
 (tooltip-mode 01)      ; Disable the tooltips
 (set-fringe-mode 10)   ; Give some breathing room
-
+(battery)
 (menu-bar-mode -1)     ; Disable the menu bar
 ;; Set up the visible bell
 (setq visible-bell t)
@@ -21,6 +21,7 @@
       custom-file null-device
       byte-compile-debug t)
 
+;;(setq display-battery-mode 1)
 (setq-default visible-bell nil)
 (setq ring-bell-function 'ignore
       initial-buffer-choice t
@@ -98,9 +99,16 @@
 
 ;; Doomline is the info bar at the bottom of the window
 (use-package doom-modeline
-  :defer t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 45)))
+  :init
+  (doom-modeline-mode 1)
+;;  (battery)
+  :config
+  (setq display-battery-mode 1)
+  (setq doom-modeline-battery t)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-project-detection 'auto)
+  (setq doom-modeline-height 45)
+  (setq doom-modeline-major-mode-color-icon t))
 
 ;; All the icons!
 (use-package all-the-icons)
@@ -311,7 +319,7 @@
   (setq dashboard-startup-banner 'logo)
   (setq dashboard-banner-logo-title "( E M A C S )")
   (setq dashboard-init-info "")
-  (setq dashboard-items nil)
+  ;;(setq dashboard-items nil)
   (setq dashboard-set-footer t)
   (setq dashboard-footer-icon "")
   (setq dashboard-footer-messages '("😈 Happy hacking!   "))
