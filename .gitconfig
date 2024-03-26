@@ -23,6 +23,8 @@
   spush = push --recurse-submodules=on-demand
 [branch]
   autosetuprebase = always
+[push]
+  autoSetupRemote = true
 [log]
   decorate = true
 [showbranch]
@@ -52,13 +54,19 @@
 	textconv = sops -d
 [rebase]
 	autoStash = true
-[credential]
-	helper = !aws codecommit credential-helper $@
-	UseHttpPath = true
 [status]
 	submoduleSummary = true
 [init]
 	defaultBranch = main
+	templateDir = /Users/tkhalil/.git-template
 [http]
 	version = HTTP/1.1
 	postBuffer = 524288000
+[github]
+	user = Thomas Khalil
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
