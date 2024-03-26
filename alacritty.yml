@@ -40,15 +40,15 @@ draw_bold_text_with_bright_colors: true
 # Font configuration (changes require restart)
 font:
   normal:
-    family: SF Mono
+    family: Berkeley Mono
     style: Regular
 
   bold:
-    family: SF Mono
+    family: Berkeley Mono
     style: Bold
 
   italic:
-    family: SF Mono
+    family: Berkeley Mono
     style: Italic
 
   # Point size of the font
@@ -70,7 +70,7 @@ font:
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  use_thin_strokes: true
+  #  use_thin_strokes: true
 
 # Should display the render timer
 debug:
@@ -153,7 +153,7 @@ visual_bell:
   duration: 0
 
 # Background opacity
-background_opacity: 1.0
+window.opacity: 1.0
 
 # Mouse bindings
 #
@@ -216,7 +216,7 @@ live_config_reload: true
 # Entries in shell.args are passed unmodified as arguments to the shell.
 #
 shell:
-  program: /usr/local/bin/bash
+  program: /opt/homebrew/bin/bash
   args:
     - --login
 
