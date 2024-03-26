@@ -1,18 +1,21 @@
 ;; Thomas K emacs config
 (setq inhibit-startup-message t )
 
-(scroll-bar-mode -1)   ; Disable visible scrollbar
+;;(scroll-bar-mode -1)   ; Disable visible scrollbar
 (tool-bar-mode -1)     ; Disable the toolbar
 (tooltip-mode 01)      ; Disable the tooltips
-(set-fringe-mode 10)   ; Give some breathing room
+;;(set-fringe-mode 10)   ; Give some breathing room
 (battery)
 (menu-bar-mode -1)     ; Disable the menu bar
 ;; Set up the visible bell
 (setq visible-bell t)
 
-(set-face-attribute 'default nil :font "Berkeley Mono" :height 200) ;; set font
+(set-face-attribute
+ 'default nil
+ :font "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons"
+ :height 200) ;; set font
 
-(load-theme 'doom-wilmersdorf t) ;; set theme
+(load-theme 'challenger-deep t) ;; set theme
 
 (setq vc-follow-symlinks t
       coding-system-for-read 'utf-8
@@ -101,13 +104,14 @@
 (use-package doom-modeline
   :init
   (doom-modeline-mode 1)
-;;  (battery)
+  ;;  (battery)
   :config
-  (setq display-battery-mode 1)
+  (setq fancy-battery-mode 1)
   (setq doom-modeline-battery t)
   (setq doom-modeline-icon t)
   (setq doom-modeline-project-detection 'auto)
   (setq doom-modeline-height 45)
+  (setq doom-modeline-project-detection 'project)
   (setq doom-modeline-major-mode-color-icon t))
 
 ;; All the icons!
@@ -115,6 +119,9 @@
 
 ;; Doom Themes
 (use-package doom-themes)
+
+;; Challenger theme!
+(use-package challenger-deep-theme)
 
 ;; Rainbow-delmiters highlights matching parens
 (use-package rainbow-delimiters
@@ -174,7 +181,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-;;  :hook (evil-mode . rune/evil-hook)
+  ;;  :hook (evil-mode . rune/evil-hook)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -195,17 +202,19 @@
 ;; Hydra - temporary context specific key bindings
 (use-package hydra)
 (defhydra hydra-text-scale (:timeout 4)
-	  "scale text"
-	  ("j" text-scale-increase "in")
-	  ("k" text-scale-decrease "out")
-	  ("f" nil "finished" :exit t))
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
 (rune/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale-text"))
 
 ;; Projectile
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
+  :config
+  (projectile-mode)
+  (setq projectile-switch-project-action 'projectile-dired)
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -267,11 +276,11 @@
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/Documents/org/daily")
+  (org-roam-directory "~/Documents/org")
   (org-roam-completion-everywhere t)
   (org-roam-dailies-capture-templates
-    '(("d" "default" entry "* %<%I:%M %p>: %?"
-       :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
@@ -297,8 +306,8 @@
 
 ;; all-the-icons
 (use-package all-the-icons
-  :if (display-graphic-p))
-
+  ;;:if (display-graphic-p))
+  )
 ;; treemacs - file navigator
 (use-package treemacs)
 (use-package treemacs-evil
@@ -307,6 +316,9 @@
   :after (treemacs projectile))
 (use-package treemacs-all-the-icons
   :after (treemacs all-the-icons))
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 (use-package treemacs-magit
   :after (treemacs magit))
 (use-package treemacs-icons-dired
@@ -329,9 +341,9 @@
                                                   (message "Refreshing Dashboard...done"))))
 
 (use-package vterm
-   :load-path "/Users/tkhalil/emacs-libvterm/"
-   :config
-   (setq vterm-shell "/opt/homebrew/bin/bash"))
+  :load-path "/Users/tkhalil/emacs-libvterm/"
+  :config
+  (setq vterm-shell "/opt/homebrew/bin/bash"))
 
 (use-package vterm-toggle
   :init (setq vterm-always-compile-module t)
@@ -350,3 +362,18 @@
                                (when window
                                  (delete-window window))
                                (kill-buffer buffer))))
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
+(use-package go-mode)
+(setq gofmt-command "goimports")
+(add-hook 'go-mode-hook 'lsp-mode-setup)
+;; Go - lsp-mode
+;; Set up before-save hooks to format buffer and add/delete imports.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Start LSP Mode and YASnippet mode
+(add-hook 'go-mode-hook #'lsp-deferred)
