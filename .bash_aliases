@@ -3,7 +3,6 @@ alias gs='git status '
 alias ga='git add '
 alias gb='git branch '
 alias gc='git commit'
-alias gh="grep github ./.git/config | sed -e 's/^.*\(github.com.*\)\.git$/\1/' -e 's/.*github\.com:*\/*/https:\/\/github.com\//' | xargs open"
 alias gd='git diff'
 alias gf='git fetch'
 alias gk='gitk --all&'
