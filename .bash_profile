@@ -18,6 +18,9 @@ export PATH="${PATH}:${GOPATH}/bin"
 # Terraform
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
+# GCP
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
 # Locale
 export LANG="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
