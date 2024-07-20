@@ -108,6 +108,7 @@
         #_1password-gui
         vscode
         obsidian
+        kubectx
         # Text and terminal utilities
         htop
         hunspell
@@ -179,6 +180,11 @@
 
       security.pam.enableSudoTouchIdAuth = true;
 
+      system.activationScripts.postUserActivation.text = ''
+        # Following line should allow us to avoid a logout/login cycle
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      '';
+
       system.defaults = {
         CustomUserPreferences = {
           NSGlobalDomain = {
@@ -211,7 +217,7 @@
           stealthenabled = 0;
         };
         dock = {
-          appswitcher-all-displays = true;
+          appswitcher-all-displays = false;
           autohide = true;
           autohide-delay = 0.0;
           autohide-time-modifier = 0.15;
@@ -276,9 +282,9 @@
         };
         screencapture = {
           disable-shadow = true;
-          location = "~/Downloads";
+          location = "~/screenshots";
           show-thumbnail = true;
-          type = "png";
+          type = "jpg";
         };
         smb = {
           NetBIOSName = null;
@@ -299,6 +305,13 @@
         };
         SoftwareUpdate = {
           AutomaticallyInstallMacOSUpdates = true;
+          # AutomaticCheckEnabled = true;
+          # # Check for software updates daily, not just once per week
+          # ScheduleFrequency = 1;
+          # # Download newly available updates in background
+          # AutomaticDownload = 1;
+          # # Install System data files & security updates
+          # CriticalUpdateInstall = 1;
         };
         LaunchServices = {
           LSQuarantine = true;
@@ -361,8 +374,8 @@
   in {
     formatter = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#tks-Virtual-Machine
-    darwinConfigurations."tks-Virtual-Machine" = nix-darwin.lib.darwinSystem {
+    # $ darwin-rebuild build --flake .#trv4129
+    darwinConfigurations."trv4129-3" = nix-darwin.lib.darwinSystem {
       modules = [
         configuration
         nix-homebrew.darwinModules.nix-homebrew
@@ -377,6 +390,7 @@
               "homebrew/homebrew-bundle" = homebrew-bundle;
             };
             mutableTaps = false;
+            enableRosetta = true;
             autoMigrate = true;
           };
         }
@@ -385,6 +399,6 @@
     };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."tks-Virtual-Machine".pkgs;
+    darwinPackages = self.darwinConfigurations."trv4129-3".pkgs;
   };
 }
