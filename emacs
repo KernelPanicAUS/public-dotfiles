@@ -1,6 +1,9 @@
 ;; Thomas K emacs config
 (setq inhibit-startup-message t )
-
+(if (display-graphic-p)
+    (progn (tool-bar-mode -1)
+	   (set-fringe-mode 10)
+	   (scroll-bar-mode -1)))
 ;;(scroll-bar-mode -1)   ; Disable visible scrollbar
 (tool-bar-mode -1)     ; Disable the toolbar
 (tooltip-mode 01)      ; Disable the tooltips
@@ -111,7 +114,9 @@
   (setq doom-modeline-icon t)
   (setq doom-modeline-project-detection 'auto)
   (setq doom-modeline-height 45)
+  (setq doom-modeline-bar-width 6)
   (setq doom-modeline-project-detection 'project)
+  (setq doom-modeline-project-detection 'ffip)
   (setq doom-modeline-major-mode-color-icon t))
 
 ;; All the icons!
