@@ -21,13 +21,13 @@ jgit/**
 iterm2/**
 htop/**
 gtk-2.0/**
-github-au/**topilot
+github-copilot/**
 git/**
 gh-dash/**
 gh/**
 gcloud/**
 direnv/**
-container/**s
+containers/**
 coc/**
 btop/**
 bat/**
