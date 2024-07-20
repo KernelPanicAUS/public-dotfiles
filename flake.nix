@@ -1,10 +1,14 @@
 {
-  description = "Example Darwin system flake";
+  description = "Thomas's nix darwin and home-manager flake.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-homebrew = {
       url = "github:zhaofengli-wip/nix-homebrew";
     };
@@ -34,8 +38,10 @@
     homebrew-core,
     homebrew-cask,
     mac-app-util,
+    home-manager,
     nixpkgs,
   } @ inputs: let
+    system = "aarch64-darwin";
     configuration = {pkgs, ...}: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
@@ -371,6 +377,21 @@
         };
       };
     };
+    userConfiguration = {...}: {
+      users.users.tkhalil = {
+        name = "tkhalil";
+        home = "/Users/tkhalil";
+      };
+
+      home-manager.users.tkhalil = {pkgs, ...}: {
+        # Specify your home configuration modules here, for example,
+        # the path to your home.nix.
+        imports = [./home-manager/home.nix];
+
+        # Optionally use extraSpecialArgs
+        # to pass through arguments to home.nix
+      };
+    };
   in {
     formatter = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
     # Build darwin flake using:
@@ -378,6 +399,7 @@
     darwinConfigurations."trv4129-3" = nix-darwin.lib.darwinSystem {
       modules = [
         configuration
+        home-manager.darwinModules.home-manager
         nix-homebrew.darwinModules.nix-homebrew
         {
           nix-homebrew = {
@@ -395,6 +417,7 @@
           };
         }
         mac-app-util.darwinModules.default
+        userConfiguration
       ];
     };
 
