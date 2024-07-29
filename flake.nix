@@ -74,6 +74,7 @@
 
         # Encryption and security tools
         #_1password
+        just
         age
         age-plugin-yubikey
         gnupg
