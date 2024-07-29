@@ -79,13 +79,18 @@
   # Programs natively supported by home-manager.
   programs = {
     bat.enable = true;
-    bat.config.theme="OneHalfDark";
+    bat.config.theme = "OneHalfDark";
     zoxide.enable = true;
     fzf.enable = true;
     jq.enable = true;
     nix-index.enable = true;
     htop.enable = true;
     bash.enable = true;
+    eza = {
+      enable = true;
+      enableZshIntegration = true;
+      icons = true;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;

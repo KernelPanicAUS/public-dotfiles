@@ -22,16 +22,16 @@
         colors.draw_bold_text_with_bright_colors = true;
         font = {
           normal = {
-            family = "Berkeley Mono";
+            family = "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons";
             # family = "Menlo";
             style = "Regular";
           };
           bold = {
-            family = "Berkeley Mono";
+            family = "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons";
             style = "Bold";
           };
           italic = {
-            family = "Berkeley Mono";
+            family = "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons";
             style = "Italic";
           };
           size = 16;
