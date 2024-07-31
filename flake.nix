@@ -77,7 +77,6 @@
         unrar
         unzip
 
-
         arc-browser
 
         # Encryption and security tools
@@ -268,6 +267,7 @@
             "/Applications/Safari.app"
             "/Applications/Microsoft Outlook.app"
             "/Applications/Google Chrome.app"
+            "${pkgs.arc-browser}/Applications/Arc.app"
             "/Applications/Firefox.app"
             "${pkgs.slack}/Applications/Slack.app"
             "${pkgs.alacritty}/Applications/Alacritty.app"
