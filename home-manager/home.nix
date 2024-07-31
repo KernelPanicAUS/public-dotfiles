@@ -29,17 +29,7 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
-    cachix
-    nil # Nix language server
-    nix-info
-    nixpkgs-fmt
-    nixci
-    direnv
-    git
-    gnupg
-    silver-searcher
-    skhd
-    vim
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of

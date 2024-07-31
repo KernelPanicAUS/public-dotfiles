@@ -60,7 +60,6 @@
         coreutils
         difftastic
         du-dust
-        iterm2
         gcc
         git-filter-repo
         killall
@@ -70,7 +69,16 @@
         sqlite
         wget
         zip
-        nixfmt-classic
+        jq
+        ripgrep
+        gnupg
+        tree
+        tmux
+        unrar
+        unzip
+
+
+        arc-browser
 
         # Encryption and security tools
         #_1password
@@ -81,6 +89,7 @@
         libfido2
         pinentry-emacs
 
+        # Cloud tools
         kubectl
         k9s
         google-cloud-sdk
@@ -116,22 +125,30 @@
         vscode
         obsidian
         kubectx
+
         # Text and terminal utilities
         htop
         hunspell
         iftop
         jetbrains-mono
-        jetbrains.phpstorm
-        jq
-        ripgrep
+
+        # Editors
+        jetbrains.idea-ultimate
+        # jetbrains-toolbox # only supported on x86_64-linux
+
+        # Communication/Chat
         slack
-        tree
-        tmux
-        unrar
-        unzip
-        zsh-powerlevel10k
-        alejandra
         zoom-us
+
+        # nix
+        cachix
+        nil # Nix language server
+        nix-info
+        nixpkgs-fmt
+        nixci
+        alejandra
+        nixfmt-classic
+
         # Python packages
         black
         python39
