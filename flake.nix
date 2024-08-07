@@ -185,6 +185,8 @@
 
       nix.settings.extra-platforms = "aarch64-darwin x86_64-darwin";
 
+      nix.settings.extra-nix-path = "nixpkgs=flake:nixpkgs";
+
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true; # default shell on catalina
       # programs.fish.enable = true;
