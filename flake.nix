@@ -76,7 +76,6 @@
         tmux
         unrar
         unzip
-
         arc-browser
 
         # Encryption and security tools
@@ -121,7 +120,7 @@
         # Source code management, Git, GitHub tools
         gh
         #_1password-gui
-        vscode
+        #        vscode
         obsidian
         kubectx
 
