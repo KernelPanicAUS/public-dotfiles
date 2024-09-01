@@ -93,6 +93,7 @@
         google-cloud-sdk
         tflint
         pre-commit
+        terraform-ls
 
         # Media-related packages
         emacs-all-the-icons-fonts
@@ -111,6 +112,7 @@
 
         # Node.js development tools
         fzf
+        nodePackages.typescript-language-server
         nodePackages.live-server
         nodePackages.nodemon
         nodePackages.prettier
@@ -121,6 +123,7 @@
         gh
         #_1password-gui
         #        vscode
+        emacs
         obsidian
         kubectx
 

@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   # Home Manager needs a bit of information about you and the paths it should
@@ -26,6 +27,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    syncthing
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -51,12 +53,24 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
+    #".emacs".source = config.lib.file.mkOutOfStoreSymlink ../.emacs;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+    ".config/emacs/tree-sitter".source = pkgs.runCommand "grammars" {} ''
+      mkdir -p $out
+      ${lib.concatStringsSep "\n"
+        (lib.mapAttrsToList
+          (name: src: "name=${name}; ln -s ${src}/parser $out/\lib${name}${
+            if pkgs.system == "aarch64-darwin"
+            then ".dylib"
+            else ".so"
+          }")
+          pkgs.tree-sitter.builtGrammars)};
+    '';
   };
 
   home.sessionVariables = {
@@ -95,6 +109,12 @@
       pinentryPackage = "mac";
       defaultCacheTtl = 34560000;
       maxCacheTtl = 34560000;
+    };
+    syncthing = {
+      enable = true;
+      #user = "tkhalil";
+      #dataDir = "~/Documents"; # Default folder for new synced folders
+      #configDir = "~/.config/syncthing"; # Folder for Syncthing's settings and keys
     };
   };
 }

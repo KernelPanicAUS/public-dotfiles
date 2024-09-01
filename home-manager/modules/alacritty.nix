@@ -10,6 +10,7 @@
           TERM = "xterm-256color";
         };
         window = {
+          option_as_alt= "Both";
           dimensions = {
             columns = 180;
             lines = 60;
