@@ -36,3 +36,5 @@ argocd/**
 alacritty/**
 result
 neofetch/**
+!emacs/init.el
+emacs/**

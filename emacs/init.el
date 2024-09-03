@@ -4,10 +4,10 @@
     (progn (tool-bar-mode -1)
 	   (set-fringe-mode 10)
 	   (scroll-bar-mode -1)))
-;;(scroll-bar-mode -1)   ; Disable visible scrollbar
+(scroll-bar-mode -1)   ; Disable visible scrollbar
 (tool-bar-mode -1)     ; Disable the toolbar
 (tooltip-mode 01)      ; Disable the tooltips
-;;(set-fringe-mode 10)   ; Give some breathing room
+(set-fringe-mode 10)   ; Give some breathing room
 (battery)
 (menu-bar-mode -1)     ; Disable the menu bar
 ;; Set up the visible bell
@@ -17,8 +17,6 @@
  'default nil
  :font "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons"
  :height 200) ;; set font
-
-(load-theme 'challenger-deep t) ;; set theme
 
 (setq vc-follow-symlinks t
       coding-system-for-read 'utf-8
@@ -59,7 +57,7 @@
 
 ;; Initialise GPG SSH socket
 ;; without `SSH_AUTH_SOCK`, magit and pinentry won't work!
-(let ((ssh-auth-sock (shell-command-to-string "/opt/homebrew/bin/gpgconf --list-dirs agent-ssh-socket")))
+(let ((ssh-auth-sock (shell-command-to-string "~/.nix-profile/bin/gpgconf --list-dirs agent-ssh-socket")))
   (setenv "SSH_AUTH_SOCK" (string-trim ssh-auth-sock)))
 
 ;; Show line numbers on the left margin
@@ -73,7 +71,6 @@
 		eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0 ))))
 
-(use-package command-log-mode)
 
 (use-package ivy
   :diminish
@@ -123,10 +120,8 @@
 (use-package all-the-icons)
 
 ;; Doom Themes
-(use-package doom-themes)
-
-;; Challenger theme!
-(use-package challenger-deep-theme)
+(use-package doom-themes
+  :config (load-theme 'doom-palenight t))
 
 ;; Rainbow-delmiters highlights matching parens
 (use-package rainbow-delimiters
@@ -156,19 +151,18 @@
 
 ;; General - Configuration for key-bindings
 (use-package general
-
   :config
-  (general-create-definer rune/leader-keys
+  (general-create-definer bitshifta/leader-keys
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
 
-  (rune/leader-keys
+  (bitshifta/leader-keys
     "t" '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")))
 
 ;; Evil
-(defun rune/evil-hook ()
+(defun bitshifta/evil-hook ()
   (dolist (mode '(custom-mode
 		  eshell-mode
 		  git-rebase-mode
@@ -186,7 +180,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-  ;;  :hook (evil-mode . rune/evil-hook)
+  ;;  :hook (evil-mode . bitshifta/evil-hook)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -211,7 +205,7 @@
   ("j" text-scale-increase "in")
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
-(rune/leader-keys
+(bitshifta/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale-text"))
 
 ;; Projectile
@@ -243,22 +237,19 @@
   :defer nil
   :config (pinentry-start))
 
-;; forge -- create Github PRs and issues from emacs
-(use-package forge)
-
-
 ;; company
-(use-package company)
-(company-mode)
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :init (company-mode)
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
 
 
 ;; terraform
-(use-package company-terraform)
-(company-terraform-init)
+(use-package company-terraform
+  :init (company-terraform-init))
 
 ;; org -- org for emacs
-(defun efs/org-mode-setup ()
+(defun bitshifta/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
@@ -266,16 +257,20 @@
   (setq evil-auto-indent nil))
 
 (use-package org
-  :hook (org-mode . efs/org-mode-setup)
+  :hook (org-mode . bitshifta/org-mode-setup)
   :config
   (setq org-ellipsis " ▼"
-	org-hide-emphasis-markers t))
+	org-hide-emphasis-markers t
+	org-agenda-files (directory-files-recursively "~/Documents/org/" "\\.org$")))
 
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+
 (use-package org-roam
   :ensure t
   :init
@@ -300,14 +295,14 @@
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode))
 
-(defun efs/org-mode-visual-fill ()
+(defun bitshifta/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
 	visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
   :after org
-  :hook (org-mode . efs/org-mode-visual-fill))
+  :hook (org-mode . bitshifta/org-mode-visual-fill))
 
 ;; all-the-icons
 (use-package all-the-icons
@@ -337,6 +332,17 @@
   (setq dashboard-banner-logo-title "( E M A C S )")
   (setq dashboard-init-info "")
   ;;(setq dashboard-items nil)
+  (setq ashboard-projects-backend 'projectile)
+  (setq dashboard-items '((recents   . 5)
+                          (bookmarks . 5)
+                          (projects  . 5)
+                          (agenda    . 5)
+                          (registers . 5)))
+  (setq dashboard-item-shortcuts '((recents   . "r")
+                                 (bookmarks . "m")
+                                 (projects  . "p")
+                                 (agenda    . "a")
+                                 (registers . "e")))
   (setq dashboard-set-footer t)
   (setq dashboard-footer-icon "")
   (setq dashboard-footer-messages '("😈 Happy hacking!   "))
@@ -344,11 +350,45 @@
                                                   (interactive)
                                                   (dashboard-refresh-buffer)
                                                   (message "Refreshing Dashboard...done"))))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(use-package direnv
+  :commands direnv-mode
+  :config (direnv-mode))
+
+(use-package savehist
+  :config
+  (savehist-mode))
+
+
+(use-package vertico
+  :straight (:host github :repo "minad/vertico" :files ("*.el" "extensions/*.el"))
+  :after (savehist)
+  :custom
+  (read-buffer-completion-ignore-case t)
+  (completion-ignore-case t)
+  (completion-styles '(flex))
+  :config (vertico-mode))
+
 
 (use-package vterm
   :load-path "/Users/tkhalil/emacs-libvterm/"
   :config
-  (setq vterm-shell "/opt/homebrew/bin/bash"))
+  (setq vterm-shell "/Users/tkhalil/.nix-profile/bin/zsh"))
 
 (use-package vterm-toggle
   :init (setq vterm-always-compile-module t)
@@ -382,3 +422,53 @@
 
 ;; Start LSP Mode and YASnippet mode
 (add-hook 'go-mode-hook #'lsp-deferred)
+
+
+(use-package typescript-ts-mode
+  :straight (:type built-in)
+  :custom
+  (lsp-javascript-display-enum-member-value-hints t)
+  (lsp-javascript-display-parameter-name-hints 'all)
+  (lsp-javascript-display-parameter-type-hints t)
+  (lsp-javascript-display-property-declaration-type-hints t)
+  (lsp-javascript-display-return-type-hints t)
+  (lsp-javascript-display-variable-type-hints t)
+  (lsp-typescript-surveys-enabled nil)
+  (typescript-ts-mode-indent-offset 4)
+  :config
+  (defun tirimia/typescript-setup ()
+    "Setup for writing TS"
+    (interactive)
+    (setq-local devdocs-current-docs '("typescript" "node~18_lts"))
+    (lsp-deferred))
+  (defun tirimia/tsx-font-lock-fix ()
+    "TSX TS parser is taking waaay too much memory. Gonna make fontification not happen as often."
+    (setq-local jit-lock-defer-time 0.5))
+  :mode (("\\.ts\\'" . typescript-ts-mode) ("\\.tsx\\'" . tsx-ts-mode))
+  :hook (((tsx-ts-mode typescript-ts-mode) . tirimia/typescript-setup)
+         (tsx-ts-mode . tirimia/tsx-font-lock-fix)))
+
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (terraform-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+;; if you are ivy user
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+(use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+;; optional if you want which-key integration
+(use-package which-key
+    :config
+    (which-key-mode))
