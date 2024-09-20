@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -40,121 +41,127 @@
     mac-app-util,
     home-manager,
     nixpkgs,
+    nixpkgs-stable,
   } @ inputs: let
     system = "aarch64-darwin";
+    pkgs-stable = import nixpkgs-stable {
+      inherit system;
+    };
     configuration = {pkgs, ...}: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages = with pkgs; [
-        vim
-        act
-        alacritty
-        bartender
-        aspell
-        aspellDicts.en
-        bash-completion
-        bat
-        vlc-bin
-        btop
-        tailscale
-        coreutils
-        difftastic
-        du-dust
-        gcc
-        git-filter-repo
-        killall
-        neofetch
-        openssh
-        pandoc
-        sqlite
-        wget
-        zip
-        jq
-        ripgrep
-        gnupg
-        tree
-        tmux
-        unrar
-        unzip
-        arc-browser
+      #environment.systemPackages = with pkgs-stable; [mpv];
+      environment.systemPackages = with pkgs;
+        [
+          vim
+          act
+          alacritty
+          bartender
+          aspell
+          aspellDicts.en
+          bash-completion
+          bat
+          vlc-bin
+          btop
+          tailscale
+          coreutils
+          difftastic
+          du-dust
+          gcc
+          git-filter-repo
+          killall
+          neofetch
+          openssh
+          pandoc
+          sqlite
+          wget
+          zip
+          jq
+          ripgrep
+          gnupg
+          tree
+          tmux
+          unrar
+          unzip
+          arc-browser
 
-        # Encryption and security tools
-        #_1password
-        just
-        age
-        age-plugin-yubikey
-        gnupg
-        libfido2
-        pinentry-emacs
+          # Encryption and security tools
+          #_1password
+          just
+          age
+          age-plugin-yubikey
+          gnupg
+          libfido2
+          pinentry-emacs
 
-        # Cloud tools
-        kubectl
-        k9s
-        google-cloud-sdk
-        tflint
-        pre-commit
-        terraform-ls
+          # Cloud tools
+          kubectl
+          k9s
+          google-cloud-sdk
+          tflint
+          pre-commit
+          terraform-ls
 
-        # Media-related packages
-        emacs-all-the-icons-fonts
-        imagemagick
-        dejavu_fonts
-        ffmpeg
-        fd
-        font-awesome
-        glow
-        hack-font
-        jpegoptim
-        meslo-lgs-nf
-        noto-fonts
-        noto-fonts-emoji
-        pngquant
+          # Media-related packages
+          emacs-all-the-icons-fonts
+          imagemagick
+          dejavu_fonts
+          ffmpeg
+          fd
+          font-awesome
+          glow
+          hack-font
+          jpegoptim
+          meslo-lgs-nf
+          noto-fonts
+          noto-fonts-emoji
+          pngquant
 
-        # Node.js development tools
-        fzf
-        nodePackages.typescript-language-server
-        nodePackages.live-server
-        nodePackages.nodemon
-        nodePackages.prettier
-        nodePackages.npm
-        nodejs
+          # Node.js development tools
+          fzf
+          nodePackages.typescript-language-server
+          nodePackages.live-server
+          nodePackages.nodemon
+          nodePackages.prettier
+          nodePackages.npm
+          nodejs
 
-        # Source code management, Git, GitHub tools
-        gh
-        #_1password-gui
-        #        vscode
-        emacs
-        obsidian
-        kubectx
+          # Source code management, Git, GitHub tools
+          gh
+          #_1password-gui
+          #        vscode
+          emacs
+          obsidian
+          kubectx
 
-        # Text and terminal utilities
-        htop
-        hunspell
-        iftop
-        jetbrains-mono
+          # Text and terminal utilities
+          htop
+          hunspell
+          iftop
+          jetbrains-mono
 
-        # Editors
-        jetbrains.idea-ultimate
-        # jetbrains-toolbox # only supported on x86_64-linux
+          # Editors
+          jetbrains.idea-ultimate
+          # jetbrains-toolbox # only supported on x86_64-linux
+          # Communication/Chat
+          slack
+          zoom-us
 
-        # Communication/Chat
-        slack
-        zoom-us
+          # nix
+          cachix
+          nil # Nix language server
+          nix-info
+          nixpkgs-fmt
+          nixci
+          alejandra
+          nixfmt-classic
 
-        # nix
-        cachix
-        nil # Nix language server
-        nix-info
-        nixpkgs-fmt
-        nixci
-        alejandra
-        nixfmt-classic
-
-        # Python packages
-        black
-        python39
-        python39Packages.virtualenv
-      ];
+          # Python packages
+          black
+          python39
+          python39Packages.virtualenv
+        ]
+        ++ [pkgs-stable.mpv];
 
       homebrew = {
         enable = true;
@@ -188,6 +195,8 @@
       nix.settings.extra-platforms = "aarch64-darwin x86_64-darwin";
 
       nix.settings.extra-nix-path = "nixpkgs=flake:nixpkgs";
+
+      nix.gc.automatic = true;
 
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true; # default shell on catalina
