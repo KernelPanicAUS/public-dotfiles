@@ -326,32 +326,43 @@
 (use-package treemacs-icons-dired
   :after (treemacs dired)
   :hook (dired-mode . treemacs-icons-dired-enable-once))
+
+;; Emacs startup dashboard
 (use-package dashboard
-  :if (display-graphic-p)
   :config
   (dashboard-setup-startup-hook)
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-banner-logo-title "( E M A C S )")
-  (setq dashboard-init-info "")
+  :custom
+  (dashboard-startup-banner 'logo)
+  (dashboard-banner-logo-title "( E M A C S )")
+  (dashboard-init-info "")
   ;;(setq dashboard-items nil)
-  (setq ashboard-projects-backend 'projectile)
-  (setq dashboard-items '((recents   . 5)
+  (dashboard-projects-backend 'projectile)
+  (dashboard-items '((recents   . 5)
                           (bookmarks . 5)
                           (projects  . 5)
                           (agenda    . 5)
                           (registers . 5)))
-  (setq dashboard-item-shortcuts '((recents   . "r")
+  (dashboard-item-shortcuts '((recents   . "r")
                                  (bookmarks . "m")
                                  (projects  . "p")
                                  (agenda    . "a")
                                  (registers . "e")))
-  (setq dashboard-set-footer t)
-  (setq dashboard-footer-icon "")
-  (setq dashboard-footer-messages '("😈 Happy hacking!   "))
+  (dashboard-week-agenda t)
+  ;(setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+  (dashboard-footer-messages '("😈 Happy hacking!   "))
   (define-key dashboard-mode-map (kbd "<f5>") #'(lambda ()
                                                   (interactive)
                                                   (dashboard-refresh-buffer)
-                                                  (message "Refreshing Dashboard...done"))))
+                                                  (message "Refreshing Dashboard...done")))
+  (dashboard-set-footer t)
+  (dashboard-display-icons-p t)     ; display icons on both GUI and terminal
+  (dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
+  (dashboard-footer-icon "")
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  :hook
+  (after-init . dashboard-setup-startup-hook))
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
