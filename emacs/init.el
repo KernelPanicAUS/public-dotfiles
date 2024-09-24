@@ -263,7 +263,7 @@
   :config
   (setq org-ellipsis " ▼"
 	org-hide-emphasis-markers t
-	org-agenda-files (directory-files-recursively "~/Documents/org/" "\\.org$")))
+	org-todo-keywords (quote ((sequenece "TODO(t)" "DOING(g)" "|" "DONE(d)")))))
 
 (use-package org-bullets
   :after org
@@ -271,7 +271,7 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+(setq org-agenda-files (directory-files "~/Documents/org/" "\\.org$"))
 
 (use-package org-roam
   :ensure t
