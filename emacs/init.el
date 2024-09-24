@@ -241,13 +241,74 @@
 
 ;; company
 (use-package company
-  :init (company-mode)
+  :bind (("C-c ." . company-complete)
+         ("C-c C-." . company-complete)
+         ("C-c s s" . company-yasnippet)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("C-d" . company-show-doc-buffer)
+         ("M-." . company-show-location))
+  :init
+  (add-hook 'c-mode-common-hook 'company-mode)
+  (add-hook 'sgml-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
+  (add-hook 'text-mode-hook 'company-mode)
+  (add-hook 'lisp-mode-hook 'company-mode)
   :config
-  (add-hook 'after-init-hook 'global-company-mode))
+  (eval-after-load 'c-mode
+    '(define-key c-mode-map (kbd "[tab]") 'company-complete))
 
+  (setq company-tooltip-limit 20)
+  (setq company-show-numbers t)
+  (setq company-dabbrev-downcase nil)
+  (setq company-idle-delay 0)
+  (setq company-echo-delay 0)
+
+  (setq company-backends '(company-capf
+                           company-keywords
+                           company-semantic
+                           company-files
+                           company-etags
+                           company-elisp
+                           ;;company-clang
+                           company-irony-c-headers
+                           company-irony
+                           company-jedi
+                           ;;company-cmake
+                           company-terraform
+                           company-yasnippet))
+
+  (global-company-mode))
+
+(use-package company-quickhelp
+  :after company
+  :config
+  (setq company-quickhelp-idle-delay 0.1)
+  (company-quickhelp-mode 1))
+
+(use-package company-irony
+  :after (company irony)
+  :commands (company-irony)
+  :config
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
+
+(use-package company-irony-c-headers
+  :commands (company-irony-c-headers)
+  :after company-irony)
+
+(use-package company-jedi
+  :commands (company-jedi)
+  :after (company python-mode))
+
+(use-package company-statistics
+  :after company
+  :config
+  (company-statistics-mode))
 
 ;; terraform
 (use-package company-terraform
+  :after company
   :init (company-terraform-init))
 
 ;; org -- org for emacs
