@@ -12,11 +12,13 @@
 (menu-bar-mode -1)     ; Disable the menu bar
 ;; Set up the visible bell
 (setq visible-bell t)
-
+(setq make-backup-files nil)
 (set-face-attribute
  'default nil
  :font "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons"
  :height 200) ;; set font
+
+(global-auto-revert-mode) ;; emacs will reload buffer from changed file on disk.
 
 (setq vc-follow-symlinks t
       coding-system-for-read 'utf-8
