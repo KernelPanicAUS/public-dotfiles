@@ -93,6 +93,7 @@
           gnupg
           libfido2
           pinentry-emacs
+          pinentry_mac
 
           # Cloud tools
           kubectl
