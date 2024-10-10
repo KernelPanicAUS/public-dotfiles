@@ -47,7 +47,16 @@
     pkgs-stable = import nixpkgs-stable {
       inherit system;
     };
-    configuration = {pkgs, ...}: {
+
+    configuration = {pkgs, ...}: let
+      gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
+        gke-gcloud-auth-plugin
+        core
+        gsutil
+        bq
+        #gcloud-crc32
+      ]);
+    in {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       #environment.systemPackages = with pkgs-stable; [mpv];
@@ -83,6 +92,7 @@
           tmux
           unrar
           unzip
+          dive
           arc-browser
 
           # Encryption and security tools
@@ -98,7 +108,6 @@
           # Cloud tools
           kubectl
           k9s
-          google-cloud-sdk
           tflint
           pre-commit
           terraform-ls
@@ -142,7 +151,7 @@
           jetbrains-mono
 
           # Editors
-          jetbrains.idea-ultimate
+          #jetbrains.idea-ultimate
           # jetbrains-toolbox # only supported on x86_64-linux
           # Communication/Chat
           slack
@@ -162,7 +171,10 @@
           python39
           python39Packages.virtualenv
         ]
-        ++ [pkgs-stable.mpv];
+        ++ [
+          pkgs-stable.mpv
+          gdk
+        ];
 
       homebrew = {
         enable = true;
