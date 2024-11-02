@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -42,6 +44,7 @@
     home-manager,
     nixpkgs,
     nixpkgs-stable,
+    determinate,
   } @ inputs: let
     system = "aarch64-darwin";
     pkgs-stable = import nixpkgs-stable {
@@ -54,7 +57,6 @@
         core
         gsutil
         bq
-        #gcloud-crc32
       ]);
     in {
       # List packages installed in system profile. To search by name, run:
@@ -200,14 +202,11 @@
 
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
-      nix.package = pkgs.nix;
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
 
       nix.settings.extra-platforms = "aarch64-darwin x86_64-darwin";
-
-      nix.settings.extra-nix-path = "nixpkgs=flake:nixpkgs";
 
       nix.gc.automatic = true;
 
@@ -441,7 +440,9 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#trv4129
     darwinConfigurations."trv4129-3" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
       modules = [
+        determinate.darwinModules.default
         configuration
         home-manager.darwinModules.home-manager
         nix-homebrew.darwinModules.nix-homebrew
