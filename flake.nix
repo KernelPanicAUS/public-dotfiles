@@ -58,12 +58,33 @@
         gsutil
         bq
       ]);
+      aerospace = pkgs.stdenv.mkDerivation (self: {
+        pname = "aerospace";
+        version = "v0.15.2-Beta";
+        src = pkgs.fetchzip {
+          url  = "https://github.com/nikitabobko/AeroSpace/releases/download/${self.version}/AeroSpace-${self.version}.zip";
+          hash = "sha256-jOSUtVSiy/S4nsgvfZZqZjxsppqNi90edn8rcTa+pFQ=";
+        };
+        sourceRoot = "./source";
+        installPhase = ''
+          mkdir -p $out/Applications
+          if [ -d AeroSpace.app ]; then
+            cp -r AeroSpace.app $out/Applications/
+          else
+            echo "No .app bundles found to copy"
+            ls -la
+            exit 1
+          fi
+        '';
+        meta.platforms = ["x86_64-darwin" "aarch64-darwin"];
+      });
     in {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       #environment.systemPackages = with pkgs-stable; [mpv];
       environment.systemPackages = with pkgs;
         [
+          aerospace
           vim
           act
           alacritty
