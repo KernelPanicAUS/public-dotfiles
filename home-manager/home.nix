@@ -93,7 +93,7 @@
     eza = {
       enable = true;
       enableZshIntegration = true;
-      icons = true;
+      icons = "auto";
     };
     direnv = {
       enable = true;

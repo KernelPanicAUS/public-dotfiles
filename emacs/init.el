@@ -1,4 +1,6 @@
-;; Thomas K emacs config
+;;; Thomas K emacs config --- Summary
+;;; Commentary:
+;;; Code:
 (setq inhibit-startup-message t )
 (if (display-graphic-p)
     (progn (tool-bar-mode -1)
@@ -19,6 +21,38 @@
  :height 200) ;; set font
 
 (global-auto-revert-mode) ;; emacs will reload buffer from changed file on disk.
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;;; Native-comp-pgtk
+(when (featurep 'native-compile)
+  (setq comp-deferred-compilation t
+	comp-async-report-warnings-errors nil
+	native-comp-speed 3
+	native-comp-async-jobs-number 12
+	byte-compile-warnings nil
+        package-native-compile t))
+
+(use-package exec-path-from-shell
+  :commands exec-path-from-shell-initialize
+  :config
+  (when (or (memq window-system '(mac ns x)) (daemonp))
+    (exec-path-from-shell-initialize)))
+(use-package use-package-ensure-system-package)
 
 (setq vc-follow-symlinks t
       coding-system-for-read 'utf-8
@@ -233,84 +267,25 @@
   :commands (magit-status magit-get-current-branch)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+;; blamer -- git blame plugin
+(use-package blamer
+  :straight (:host github :repo "artawower/blamer.el")
+  :bind (("s-i" . blamer-show-commit-info))
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                    :background nil
+                    :height 180
+                    :italic t)))
+  :config
+  (global-blamer-mode 1))
 
 ;; Pinentry
 (use-package pinentry
   :defer nil
   :config (pinentry-start))
-
-;; company
-(use-package company
-  :bind (("C-c ." . company-complete)
-         ("C-c C-." . company-complete)
-         ("C-c s s" . company-yasnippet)
-         :map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ("C-d" . company-show-doc-buffer)
-         ("M-." . company-show-location))
-  :init
-  (add-hook 'c-mode-common-hook 'company-mode)
-  (add-hook 'sgml-mode-hook 'company-mode)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode)
-  (add-hook 'text-mode-hook 'company-mode)
-  (add-hook 'lisp-mode-hook 'company-mode)
-  :config
-  (eval-after-load 'c-mode
-    '(define-key c-mode-map (kbd "[tab]") 'company-complete))
-
-  (setq company-tooltip-limit 20)
-  (setq company-show-numbers t)
-  (setq company-dabbrev-downcase nil)
-  (setq company-idle-delay 0)
-  (setq company-echo-delay 0)
-
-  (setq company-backends '(company-capf
-                           company-keywords
-                           company-semantic
-                           company-files
-                           company-etags
-                           company-elisp
-                           ;;company-clang
-                           company-irony-c-headers
-                           company-irony
-                           company-jedi
-                           ;;company-cmake
-                           company-terraform
-                           company-yasnippet))
-
-  (global-company-mode))
-
-(use-package company-quickhelp
-  :after company
-  :config
-  (setq company-quickhelp-idle-delay 0.1)
-  (company-quickhelp-mode 1))
-
-(use-package company-irony
-  :after (company irony)
-  :commands (company-irony)
-  :config
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
-
-(use-package company-irony-c-headers
-  :commands (company-irony-c-headers)
-  :after company-irony)
-
-(use-package company-jedi
-  :commands (company-jedi)
-  :after (company python-mode))
-
-(use-package company-statistics
-  :after company
-  :config
-  (company-statistics-mode))
-
-;; terraform
-(use-package company-terraform
-  :after company
-  :init (company-terraform-init))
-
 ;; org -- org for emacs
 (defun bitshifta/org-mode-setup ()
   (org-indent-mode)
@@ -424,21 +399,6 @@
   :hook
   (after-init . dashboard-setup-startup-hook))
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
 
 (use-package direnv
   :commands direnv-mode
@@ -523,26 +483,184 @@
          (tsx-ts-mode . tirimia/tsx-font-lock-fix)))
 
 (use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (terraform-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports lsp-completion-at-point)
+  :custom
+  (lsp-completion-provider :none)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-diagnostic-clean-after-change t)
+  (lsp-modeline-diagnostics-enable nil)
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-signature-render-documentation nil)
+  (lsp-inlay-hint-enable t)
+  (lsp-disabled-clients '())
+  (lsp-semgrep-languages '() "Disable this stupid lsp"))
 
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
-;; if you are ivy user
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-ui
+  :general
+  (:states 'normal :keymaps 'lsp-mode-map
+           "gd" '(lsp-ui-peek-find-definitions :which-key "Definitions")
+           "gr" '(lsp-ui-peek-find-references :which-key "References")
+           "K" '(lsp-describe-thing-at-point :which-key "Describe"))
+  :config
+  (setq-default lsp-ui-sideline-enable nil)
+  (setq-default lsp-ui-sideline-show-diagnostics nil)
+  (setq-default lsp-ui-doc-show-with-cursor nil)
+  (setq-default lsp-ui-doc-show-with-mouse nil)
+  (setq-default lsp-ui-doc-use-webkit t))
 
-;; optionally if you want to use debugger
-(use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
+(use-package corfu
+  :commands (global-corfu-mode)
+  :straight (:host github :repo "minad/corfu" :files ("*.el" "extensions/*.el"))
+  :general
+  (corfu-map "TAB" 'corfu-complete)
+  (corfu-map "RET" nil)
+  :bind ("M-/" . completion-at-point)
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 2)
+  (corfu-quit-no-match 'separator)
+  (corfu-on-exact-match nil "Sometimes gets in the way something fierce, needs to be disabled")
+  (corfu-cycle t)
+  (corfu-preselect 'first)
+  :config
+  (corfu-popupinfo-mode 1)
+  (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+    (when (where-is-internal #'completion-at-point (list (current-local-map)))
+      ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil)
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer))
+(when (fboundp 'global-corfu-mode) (global-corfu-mode)) ;; need to run it outside the use-package because otherwise it won't load, wrapped to stop warning
+;; if inside the block it needs a restart
+(use-package yasnippet
+  :after (evil)
+  :commands yas-global-mode
+  :defines (yas-keymap)
+  :config (yas-global-mode)
+  :general
+  (:states 'insert
+           "C-p" 'yas-insert-snippet)
+  (:keymaps 'yas-keymap
+            "RET" 'yas-next-field
+            "TAB" nil
+            "<tab>" nil
+                                        ; "C-g" 'corfu-quit
+            ))
+(use-package yasnippet-snippets
+  :after yasnippet)
+(use-package yasnippet-capf
+  :commands (yasnippet-capf)
+  :after yasnippet)
+
+(use-package cape
+  :straight (:host github :repo "minad/cape" :files ("*.el"))
+  :commands (cape-dabbrev cape-keyword cape-file cape-capf-super cape-wrap-silent cape-wrap-noninterruptible)
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (defun setup-lsp-completion ()
+    (setq-local completion-at-point-functions (list (cape-capf-super
+                                                     #'lsp-completion-at-point
+                                                     #'yasnippet-capf)
+                                                    #'cape-file
+                                                    #'cape-dabbrev)))
+  (defun setup-elisp-completion ()
+    (setq-local completion-at-point-functions (list (cape-capf-super #'elisp-completion-at-point
+                                                                     #'yasnippet-capf)
+                                                    #'cape-file
+                                                    #'cape-dabbrev)))
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+  ;; Lsp is not playing nicely with corfu and leads to it hanging, this fixes it https://github.com/minad/corfu/issues/188#issuecomment-1148658471
+  (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+  :hook
+  (emacs-lisp-mode     . setup-elisp-completion)
+  (lsp-completion-mode . setup-lsp-completion))
+
+(use-package flycheck
+  :after general
+  :commands (global-flycheck-mode)
+  :custom
+  (flycheck-display-erors-delay 0.15)
+  (flycheck-emacs-lisp-load-path 'inherit)
+  :general
+  (:states '(normal visual)
+           "g[" 'flycheck-next-error
+           "g]" 'flycheck-previous-error)
+  ("M-g n" '(flycheck-next-error :which-key "Next error")
+   "M-g p" '(flycheck-previous-error :which-key "Previous error"))
+  :config
+  (global-flycheck-mode 1))
+(use-package consult-flycheck)
+(use-package flycheck-inline
+  :hook (flycheck-mode . flycheck-inline-mode))
+(use-package flycheck-actionlint
+  :after flycheck
+  :config (flycheck-actionlint-setup))
+(use-package flycheck-relint
+  :after flycheck
+  :commands (flycheck-relint-setup)
+  :config (flycheck-relint-setup))
+(use-package flycheck-package
+  :after (flycheck elisp-mode)
+  :commands (flycheck-package-setup)
+  :config (flycheck-package-setup))
+(use-package flycheck-golangci-lint
+  :after (flycheck go-ts-mode)
+  :straight (:host github :repo "forgoty/flycheck-golangci-lint")
+  :commands (flycheck-golangci-lint-setup)
+  :config
+  (flycheck-golangci-lint-setup))
+
+(use-package lsp-biome
+  :straight (:host github :repo "cxa/lsp-biome" :files ("lsp-biome.el"))
+  :config
+  (setq lsp-biome-organize-imports-on-save t)
+  (setq lsp-biome-autofix-on-save t)
+  (setq lsp-biome-format-on-save t)
+  (setq lsp-biome-active-file-types (list (rx "." (or "tsx" "jsx"
+                  "ts" "js"
+                  "mts" "mjs"
+                  "cts" "cjs"
+                  "json" "jsonc")
+          eos))))
 ;; optional if you want which-key integration
 (use-package which-key
     :config
     (which-key-mode))
+
+(use-package kubel
+  :straight t
+  :after (vterm)
+  :config (kubel-vterm-setup))
+
+;; This assumes you've installed the package via MELPA.
+(use-package ligature
+  :straight t
+  :config
+  ;; Enable the "www" ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable traditional ligature support in eww-mode, if the
+  ;; `variable-pitch' face supports it
+  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+  ;; Enable all Cascadia Code ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                       "\\\\" "://"))
+  ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; per mode with `ligature-mode'.
+  (global-ligature-mode t))
+;;; init.el ends here
