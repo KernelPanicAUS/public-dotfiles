@@ -98,8 +98,8 @@
         };
         selection = {semantic_escape_chars = ",│`|:\"' ()[]{}<>";};
         cursor = {style = "Block";};
-        live_config_reload = true;
-        shell = {
+        general.live_config_reload = true;
+        terminal.shell = {
           program = "${pkgs.zsh}/bin/zsh";
           args = ["--login"];
         };

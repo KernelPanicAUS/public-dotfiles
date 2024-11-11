@@ -191,11 +191,11 @@
 
           # Python packages
           black
-          python39
-          python39Packages.virtualenv
+          #python39
+          #python39Packages.virtualenv
         ]
         ++ [
-          pkgs-stable.mpv
+#          pkgs-stable.mpv
           gdk
         ];
 
@@ -228,6 +228,8 @@
       nix.settings.experimental-features = "nix-command flakes";
 
       nix.settings.extra-platforms = "aarch64-darwin x86_64-darwin";
+
+      nix.settings.download-buffer-size = "536870912";
 
       nix.gc.automatic = true;
 
