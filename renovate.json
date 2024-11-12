@@ -13,6 +13,7 @@
     "nix"
   ],
   "nix": {
-    "enabled": true
+    "enabled": true,
+    "automerge": true
   }
 }
