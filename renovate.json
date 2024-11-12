@@ -7,7 +7,7 @@
     "enabled": true,
     "automerge": true,
     "ignoreTests": true,
-    "extends": ["schedule:daily"]
+    "extends": ["schedule:weekly"]
   },
   "enabledManagers": [
     "nix"
