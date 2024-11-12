@@ -10,9 +10,14 @@
     "extends": ["schedule:weekly"]
   },
   "enabledManagers": [
-    "nix"
+    "nix",
+    "pre-commit"
   ],
   "nix": {
+    "enabled": true,
+    "automerge": true
+  },
+  "pre-commit": {
     "enabled": true,
     "automerge": true
   }
