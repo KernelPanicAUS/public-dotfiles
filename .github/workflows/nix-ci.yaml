@@ -9,6 +9,7 @@ on:
 jobs:
   tests:
     runs-on: macos-latest
+    timeout-minutes: 12
     steps:
     - uses: actions/checkout@v4
     
