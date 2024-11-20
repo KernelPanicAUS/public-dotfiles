@@ -459,7 +459,6 @@
       };
     };
   in {
-    formatter = nixpkgs.legacyPackages.aarch64-darwin.alejandra;
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#trv4129
     darwinConfigurations."trv4129-3" = nix-darwin.lib.darwinSystem {
