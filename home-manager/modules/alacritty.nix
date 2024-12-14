@@ -86,7 +86,7 @@
           };
         };
 
-        window.opacity = 1;
+        window.opacity = 0.7;
         mouse = {
           hide_when_typing = true;
           bindings = [

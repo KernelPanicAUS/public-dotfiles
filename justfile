@@ -1,8 +1,8 @@
 default:
 	@just --default
 
-apply:
-	nix run nix-darwin -- switch --flake .#trv4129-3
+apply target="trv4129-3":
+	nix run nix-darwin -- switch --flake .#{{target}}
 
 update:
 	nix flake update
