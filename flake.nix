@@ -184,7 +184,7 @@
     ];
 
     uniConfiguration = {pkgs, ...}: {
-      environment.systemPackages = commonPackages pkgs;
+      environment.systemPackages = commonPackages pkgs ++ [pkgs.lmstudio];
 
       homebrew = {
         enable = true;
@@ -265,7 +265,7 @@
             dashboard-in-overlay = false;
             enable-spring-load-actions-on-all-items = false;
             expose-animation-duration = 0.2;
-            expose-group-by-app = false;
+            expose-group-apps = false;
             launchanim = true;
             mineffect = "genie";
             minimize-to-application = false;
@@ -284,12 +284,14 @@
             persistent-apps = [
               "/Applications/Safari.app"
               "/System/Applications/Mail.app"
+              "/System/Applications/Messages.app"
               "/System/Applications/Calendar.app"
               "${pkgs.arc-browser}/Applications/Arc.app"
               "/Applications/Firefox.app"
               "${pkgs.slack}/Applications/Slack.app"
               "${pkgs.alacritty}/Applications/Alacritty.app"
               "/System/Applications/System Settings.app"
+              "/System/Applications/TV.app"
             ];
             # persistent-others = [ "/Users/${user.login}/Downloads/" ];
           };
@@ -523,7 +525,7 @@
             dashboard-in-overlay = false;
             enable-spring-load-actions-on-all-items = false;
             expose-animation-duration = 0.2;
-            expose-group-by-app = false;
+            expose-group-apps = false;
             launchanim = true;
             mineffect = "genie";
             minimize-to-application = false;
