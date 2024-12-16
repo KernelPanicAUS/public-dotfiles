@@ -90,19 +90,6 @@
         wvous-br-corner = 1;
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
-        persistent-apps = [
-          "/Applications/Safari.app"
-          "/System/Applications/Mail.app"
-          "/System/Applications/Messages.app"
-          "/System/Applications/Calendar.app"
-          "${pkgs.arc-browser}/Applications/Arc.app"
-          "/Applications/Firefox.app"
-          "${pkgs.slack}/Applications/Slack.app"
-          "${pkgs.alacritty}/Applications/Alacritty.app"
-          "/System/Applications/System Settings.app"
-          "/System/Applications/TV.app"
-        ];
-        # persistent-others = [ "/Users/${user.login}/Downloads/" ];
       };
       finder = {
         _FXShowPosixPathInTitle = false;
