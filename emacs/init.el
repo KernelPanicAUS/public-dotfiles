@@ -470,7 +470,9 @@
   (lsp-typescript-surveys-enabled nil)
   (typescript-ts-mode-indent-offset 4)
   :config
-  (defun tirimia/typescript-setup ()
+  (require 'dap-node)
+  (dap-node-setup)
+  (defun bitshifta/typescript-setup ()
     "Setup for writing TS"
     (interactive)
     (setq-local devdocs-current-docs '("typescript" "node~18_lts"))
@@ -479,8 +481,8 @@
     "TSX TS parser is taking waaay too much memory. Gonna make fontification not happen as often."
     (setq-local jit-lock-defer-time 0.5))
   :mode (("\\.ts\\'" . typescript-ts-mode) ("\\.tsx\\'" . tsx-ts-mode))
-  :hook (((tsx-ts-mode typescript-ts-mode) . tirimia/typescript-setup)
-         (tsx-ts-mode . tirimia/tsx-font-lock-fix)))
+  :hook (((tsx-ts-mode typescript-ts-mode) . bitshifta/typescript-setup)
+         (tsx-ts-mode . bitshifta/tsx-font-lock-fix)))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports lsp-completion-at-point)
@@ -494,6 +496,8 @@
   (lsp-inlay-hint-enable t)
   (lsp-disabled-clients '())
   (lsp-semgrep-languages '() "Disable this stupid lsp"))
+
+(use-package dap-mode)
 
 (use-package lsp-ui
   :general
