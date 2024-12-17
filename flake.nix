@@ -53,7 +53,7 @@
     };
     generateSystemDerivation = systemName:
       nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+        inherit system;
         specialArgs = {inherit self;};
         modules = [
           determinate.darwinModules.default
