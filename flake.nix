@@ -47,90 +47,52 @@
     determinate,
   } @ inputs: let
     system = "aarch64-darwin";
+    user = "tkhalil";
     pkgs-stable = import nixpkgs-stable {
       inherit system;
     };
+    generateSystemDerivation = systemName:
+      nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = {inherit self;};
+        modules = [
+          determinate.darwinModules.default
+          (import ./hosts/${systemName}.nix)
+          home-manager.darwinModules.home-manager
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              inherit user;
+              enable = true;
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+                "homebrew/homebrew-bundle" = homebrew-bundle;
+              };
+              mutableTaps = false;
+              enableRosetta = true;
+              autoMigrate = true;
+            };
+          }
+          mac-app-util.darwinModules.default
+          ({...}: {
+            users.users.${user} = {
+              name = user;
+              home = "/Users/${user}";
+            };
 
-    uniConfiguration = {pkgs, ...}: {
-      imports = [./hosts/uni.nix];
-    };
-
-    workConfiguration = {pkgs, ...}: let
-    in {
-      imports = [./hosts/trv4129-3.nix];
-    };
-    userConfiguration = {...}: {
-      users.users.tkhalil = {
-        name = "tkhalil";
-        home = "/Users/tkhalil";
+            home-manager.users.${user} = {pkgs, ...}: {
+              imports = [./home-manager/home.nix];
+            };
+          })
+        ];
       };
-
-      home-manager.users.tkhalil = {pkgs, ...}: {
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        imports = [./home-manager/home.nix];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-      };
-    };
   in {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#trv4129
-    darwinConfigurations."uni" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      specialArgs = {inherit self;};
-      modules = [
-        determinate.darwinModules.default
-        uniConfiguration
-        home-manager.darwinModules.home-manager
-        nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            # inherit user;
-            enable = true;
-            user = "tkhalil";
-            taps = {
-              "homebrew/homebrew-core" = homebrew-core;
-              "homebrew/homebrew-cask" = homebrew-cask;
-              "homebrew/homebrew-bundle" = homebrew-bundle;
-            };
-            mutableTaps = false;
-            enableRosetta = true;
-            autoMigrate = true;
-          };
-        }
-        mac-app-util.darwinModules.default
-        userConfiguration
-      ];
-    };
-
-    darwinConfigurations."trv4129-3" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      specialArgs = {inherit self;};
-      modules = [
-        determinate.darwinModules.default
-        workConfiguration
-        home-manager.darwinModules.home-manager
-        nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            # inherit user;
-            enable = true;
-            user = "tkhalil";
-            taps = {
-              "homebrew/homebrew-core" = homebrew-core;
-              "homebrew/homebrew-cask" = homebrew-cask;
-              "homebrew/homebrew-bundle" = homebrew-bundle;
-            };
-            mutableTaps = false;
-            enableRosetta = true;
-            autoMigrate = true;
-          };
-        }
-        mac-app-util.darwinModules.default
-        userConfiguration
-      ];
+    darwinConfigurations = {
+      "uni" = generateSystemDerivation "uni";
+      "trv4129-3" = generateSystemDerivation "trv4129-3";
     };
   };
 }
