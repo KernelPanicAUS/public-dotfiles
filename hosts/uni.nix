@@ -5,7 +5,11 @@
   self,
   system,
   ...
-}: {
+}: let
+  common = import ../packages/common.nix {inherit pkgs;};
+  additionalPackages = with pkgs; [lmstudio];
+in {
+  environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
 
   homebrew = {
