@@ -48,9 +48,8 @@
   } @ inputs: let
     system = "aarch64-darwin";
     user = "tkhalil";
-    pkgs-stable = import nixpkgs-stable {
-      inherit system;
-    };
+    pkgs-stable = import nixpkgs-stable {inherit system;};
+
     generateSystemDerivation = systemName:
       nix-darwin.lib.darwinSystem {
         inherit system;
