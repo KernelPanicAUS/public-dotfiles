@@ -41,7 +41,7 @@
 in {
   imports = [./common.nix];
 
-  environment.systemPackages = common.packages ++ additionalPackages;
+  environment.systemPackages = common.commonPackages ++ additionalPackages;
   homebrew = {
     enable = true;
     onActivation = {
