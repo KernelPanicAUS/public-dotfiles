@@ -10,29 +10,29 @@ jobs:
     timeout-minutes: 12
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Install Nix
       uses: DeterminateSystems/nix-installer-action@main
       with:
         extra-conf: |
           accept-flake-config = true
           extra-experimental-features = nix-command flakes
-    
+
     - name: Enable cached builds
       uses: DeterminateSystems/magic-nix-cache-action@main
-    
+
     - name: Check flake inputs
       run: nix flake check
-    
+
     - name: Build darwin system
       run: |
         nix build .#darwinConfigurations."trv4129-3".system
-        
+
     # Optional: Check that the flake.lock is up to date
     - name: Check flake.lock
       run: |
         nix flake lock --no-update-lock-file
-        
+
     # Optional: Show build closure size
     - name: Show closure size
       run: |

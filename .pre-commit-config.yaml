@@ -10,3 +10,11 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
       - id: check-added-large-files
+  - repo: local
+    hooks:
+      - id: alejandra
+        name: alejandra
+        entry: alejandra
+        files: \.nix$
+        language: system
+        stages: [pre-commit]

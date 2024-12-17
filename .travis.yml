@@ -6,7 +6,7 @@ script:
 - jdk_switcher use oraclejdk8
 - java -version
 - sed -i '' '/mas "/s/^/#/g' Brewfile
-- sed -i '' '/brew "mesos"/d' Brewfile 
+- sed -i '' '/brew "mesos"/d' Brewfile
 - git diff
 - rm -rf /usr/local/Cellar/*
 - brew prune
