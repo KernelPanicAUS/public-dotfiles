@@ -31,7 +31,6 @@
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
-    pre-commit-hooks = {url = "github:cachix/git-hooks.nix";};
   };
 
   outputs = {
@@ -75,7 +74,7 @@
             };
           }
           mac-app-util.darwinModules.default
-          ({...}: {
+          (_: {
             users.users.${user} = {
               name = user;
               home = "/Users/${user}";
