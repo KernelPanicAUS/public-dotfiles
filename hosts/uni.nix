@@ -35,6 +35,20 @@
     hash = "sha256-XbcCtV2kfcMG6PWUjZHvhb69MV3fopQoMioK9+1+an4=";
     format = "zip";
   };
+  _1password = dervify rec {
+    pname = "1password";
+    version = "8.10.48";
+    url = "https://downloads.1password.com/mac/1Password-8.10.48-aarch64.zip";
+    hash = "sha256-LZ56dIJ5vXJ1SbCI8hdeldKJwzkfM0Tp8d9eZ4tQ9/k=";
+    format = "zip";
+  };
+  istat-menus = dervify rec {
+    pname = "istat-menus";
+    version = "7.02.15";
+    url = "https://cdn.istatmenus.app/files/istatmenus7/versions/iStatMenus7.02.15.zip";
+    hash = "sha256-TEDSNuUS3Xuqzqjo+rdJuVDXjtsFan6gnpTbQp2xDo0=";
+    format = "zip";
+  };
   additionalPackages = with pkgs;
     [lmstudio]
     ++ [
@@ -42,23 +56,12 @@
       alfred
       orbstack
       hammerspoon
+      _1password
+      istat-menus
     ];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
-
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-    };
-    taps = [];
-    brews = ["aria2"];
-    casks = [
-      "1password"
-      "istat-menus"
-    ];
-  };
 
   system = {
     defaults = {

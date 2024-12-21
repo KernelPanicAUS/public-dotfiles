@@ -1,5 +1,6 @@
 {pkgs, ...}: let
   commonPackages = with pkgs; [
+    aria2
     vim
     act
     alacritty
