@@ -7,33 +7,7 @@
   ...
 }: let
   common = import ../packages/common.nix {inherit pkgs;};
-  dervify = {
-    pname,
-    version,
-    url,
-    hash,
-  }:
-    pkgs.stdenv.mkDerivation (self: {
-      inherit pname;
-      inherit version;
-
-      src = pkgs.fetchurl {
-        inherit url;
-        inherit hash;
-        curlOptsList = ["-HUser-Agent: Wget/1.21.4" "-HAccept: */*"];
-      };
-
-      buildInputs = with pkgs; [undmg];
-
-      sourceRoot = ".";
-
-      installPhase = ''
-        runHook preInstall
-
-        mkdir -p "$out/Applications" "$out/bin"
-        cp -r *.app "$out/Applications"
-      '';
-    });
+  dervify = import ./dervify.nix {inherit pkgs;};
 
   alfred = dervify rec {
     pname = "Alfred";
@@ -47,8 +21,14 @@
     url = "https://github.com/objective-see/${pname}/releases/download/v${version}/${pname}_${version}.dmg";
     hash = "sha256-OagnURumn+Aw5XBEbdz0LSEuhc3abY8h+RlXarzKgBk=";
   };
-
-  additionalPackages = with pkgs; [lmstudio] ++ [lulu alfred];
+  orbstack = dervify rec {
+    pname = "Orbstack";
+    version = "1.9.2";
+    url = "https://cdn-updates.orbstack.dev/arm64/OrbStack_v1.9.2_18814_arm64.dmg";
+    hash = "sha256-rNKfP6+vbxUGfzdYqy6F+iSn5XzZw1MN0EXL7odFvXI=";
+    useHdiutil = true;
+  };
+  additionalPackages = with pkgs; [lmstudio] ++ [lulu alfred orbstack];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
