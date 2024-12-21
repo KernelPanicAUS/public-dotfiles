@@ -16,6 +16,12 @@
     sourceRoot = ".";
   };
 
+  standardInstallPhase = ''
+    runHook preInstall
+    mkdir -p "$out/Applications" "$out/bin"
+    cp -r *.app "$out/Applications"
+  '';
+
   zipAttrs =
     baseAttrs
     // {
@@ -23,22 +29,14 @@
       unpackCmd = ''
         unzip $src
       '';
-      installPhase = ''
-        runHook preInstall
-        mkdir -p "$out/Applications" "$out/bin"
-        cp -r *.app "$out/Applications"
-      '';
+      installPhase = standardInstallPhase;
     };
 
   undmgAttrs =
     baseAttrs
     // {
       buildInputs = with pkgs; [undmg];
-      installPhase = ''
-        runHook preInstall
-        mkdir -p "$out/Applications" "$out/bin"
-        cp -r *.app "$out/Applications"
-      '';
+      installPhase = standardInstallPhase;
     };
 
   hdiutilAttrs =
