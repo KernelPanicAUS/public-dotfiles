@@ -3,6 +3,7 @@
   version,
   url,
   hash,
+  format ? "dmg", # can be "dmg" or "zip"
   useHdiutil ? false,
   ...
 } @ args: let
@@ -14,6 +15,20 @@
     };
     sourceRoot = ".";
   };
+
+  zipAttrs =
+    baseAttrs
+    // {
+      nativeBuildInputs = with pkgs; [unzip];
+      unpackCmd = ''
+        unzip $src
+      '';
+      installPhase = ''
+        runHook preInstall
+        mkdir -p "$out/Applications" "$out/bin"
+        cp -r *.app "$out/Applications"
+      '';
+    };
 
   undmgAttrs =
     baseAttrs
@@ -51,6 +66,8 @@
       '';
     };
 in
-  if useHdiutil
-  then pkgs.stdenvNoCC.mkDerivation (hdiutilAttrs // builtins.removeAttrs args ["useHdiutil"])
-  else pkgs.stdenv.mkDerivation (undmgAttrs // builtins.removeAttrs args ["useHdiutil"])
+  if format == "zip"
+  then pkgs.stdenv.mkDerivation (zipAttrs // builtins.removeAttrs args ["format" "useHdiutil"])
+  else if useHdiutil
+  then pkgs.stdenvNoCC.mkDerivation (hdiutilAttrs // builtins.removeAttrs args ["format" "useHdiutil"])
+  else pkgs.stdenv.mkDerivation (undmgAttrs // builtins.removeAttrs args ["format" "useHdiutil"])

@@ -28,7 +28,21 @@
     hash = "sha256-rNKfP6+vbxUGfzdYqy6F+iSn5XzZw1MN0EXL7odFvXI=";
     useHdiutil = true;
   };
-  additionalPackages = with pkgs; [lmstudio] ++ [lulu alfred orbstack];
+  hammerspoon = dervify rec {
+    pname = "hammerspoon";
+    version = "1.0.0";
+    url = "https://github.com/Hammerspoon/hammerspoon/releases/download/1.0.0/Hammerspoon-1.0.0.zip";
+    hash = "sha256-XbcCtV2kfcMG6PWUjZHvhb69MV3fopQoMioK9+1+an4=";
+    format = "zip";
+  };
+  additionalPackages = with pkgs;
+    [lmstudio]
+    ++ [
+      lulu
+      alfred
+      orbstack
+      hammerspoon
+    ];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
@@ -43,8 +57,6 @@ in {
     casks = [
       "1password"
       "istat-menus"
-      "orbstack"
-      "hammerspoon"
     ];
   };
 
