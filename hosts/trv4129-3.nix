@@ -47,16 +47,8 @@ in {
     onActivation = {
       autoUpdate = true;
     };
-    taps = [];
-    brews = ["aria2"];
     casks = [
-      "1password"
       "microsoft-office"
-      "alfred"
-      "istat-menus"
-      "lulu"
-      "orbstack"
-      "hammerspoon"
       "caffeine"
     ];
   };
