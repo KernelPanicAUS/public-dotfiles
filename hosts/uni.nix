@@ -7,7 +7,7 @@
   ...
 }: let
   common = import ../packages/common.nix {inherit pkgs;};
-  additionalPackages = with pkgs; [lmstudio];
+  additionalPackages = with pkgs; [lmstudio mas];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
@@ -24,6 +24,7 @@ in {
           "/Applications/Firefox.app"
           "${pkgs.slack}/Applications/Slack.app"
           "${pkgs.alacritty}/Applications/Alacritty.app"
+          "/Applications/Nix Trampolines/Ghostty.app"
           "/System/Applications/System Settings.app"
           "/System/Applications/TV.app"
         ];

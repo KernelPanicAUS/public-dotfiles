@@ -40,6 +40,13 @@
     hash = "sha256-TEDSNuUS3Xuqzqjo+rdJuVDXjtsFan6gnpTbQp2xDo0=";
     format = "zip";
   };
+  ghostty = dervify rec {
+    pname = "Ghostty";
+    version = "1.0.0";
+    url = "https://release.files.ghostty.org/${version}/${pname}.dmg";
+    hash = "sha256-CR96Kz9BYKFtfVKygiEku51XFJk4FfYqfXACeYQ3JlI=";
+    useHdiutil = true;
+  };
   basePackages = with pkgs; [
     aria2
     vim
@@ -146,7 +153,17 @@
     # Python packages
     black
   ];
-  commonPackages = basePackages ++ [alfred lulu orbstack hammerspoon _1password istat-menus];
+  commonPackages =
+    basePackages
+    ++ [
+      alfred
+      lulu
+      orbstack
+      hammerspoon
+      _1password
+      istat-menus
+      ghostty
+    ];
 in {
   inherit commonPackages;
 }
