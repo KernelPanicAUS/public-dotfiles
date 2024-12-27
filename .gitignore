@@ -38,3 +38,4 @@ result
 neofetch/**
 !emacs/init.el
 emacs/**
+ghostty/**
