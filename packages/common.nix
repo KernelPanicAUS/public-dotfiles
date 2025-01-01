@@ -42,7 +42,7 @@
   };
   ghostty = dervify rec {
     pname = "Ghostty";
-    version = "1.0.0";
+    version = "1.0.1";
     url = "https://release.files.ghostty.org/${version}/${pname}.dmg";
     hash = "sha256-CR96Kz9BYKFtfVKygiEku51XFJk4FfYqfXACeYQ3JlI=";
     useHdiutil = true;
