@@ -7,7 +7,15 @@
   ...
 }: let
   common = import ../packages/common.nix {inherit pkgs;};
-  additionalPackages = with pkgs; [lmstudio mas];
+  dervify = import ../packages/dervify.nix {inherit pkgs;};
+  notion = dervify rec {
+    pname = "Notion";
+    version = "4.2.0";
+    url = "https://desktop-release.notion-static.com/${pname}-${version}-universal.dmg";
+    hash = "sha256-+s31ix5Ce4JNqbPDKBrWxz+3YR5QNv/CKLHLXrxsIao=";
+    format = "dmg";
+  };
+  additionalPackages = with pkgs; [lmstudio mas notion];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];
@@ -24,6 +32,7 @@ in {
           "/Applications/Firefox.app"
           "${pkgs.slack}/Applications/Slack.app"
           "${pkgs.alacritty}/Applications/Alacritty.app"
+          "/Applications/Nix Trampolines/Notion.app"
           "/Applications/Nix Trampolines/Ghostty.app"
           "/System/Applications/System Settings.app"
           "/System/Applications/TV.app"
