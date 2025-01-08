@@ -7,7 +7,7 @@ on:
 jobs:
   build: # it has to be called build in order for github to recognise it as a status check
     runs-on: macos-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
     - uses: actions/checkout@v4
 
