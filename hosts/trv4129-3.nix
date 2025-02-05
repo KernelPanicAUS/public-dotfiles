@@ -37,6 +37,7 @@
     lmstudio
     gdk
     aerospace
+    rancher
   ];
 in {
   imports = [./common.nix];
