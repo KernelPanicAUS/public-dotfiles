@@ -11,7 +11,8 @@
   },
   "enabledManagers": [
     "nix",
-    "pre-commit"
+    "pre-commit",
+    "github-actions"
   ],
   "nix": {
     "enabled": true,
@@ -19,6 +20,11 @@
   },
   "pre-commit": {
     "enabled": true,
+    "automerge": true
+  },
+  "github-actions": {
+    "enabled": true,
+    "pinDigests": true,
     "automerge": true
   }
 }
