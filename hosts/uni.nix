@@ -10,6 +10,7 @@
   dervify = import ../packages/dervify.nix {inherit pkgs;};
   notion = dervify rec {
     pname = "Notion";
+    # renovate: datasource=notion-releases depName=Notion
     version = "4.2.0";
     url = "https://desktop-release.notion-static.com/${pname}-${version}-universal.dmg";
     hash = "sha256-+s31ix5Ce4JNqbPDKBrWxz+3YR5QNv/CKLHLXrxsIao=";
