@@ -127,6 +127,7 @@
     gh
     #_1password-gui
     #        vscode
+    code-cursor
     emacs
     obsidian
     kubectx
