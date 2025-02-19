@@ -40,6 +40,7 @@
       status.submoduleSummary = true;
       init.defaultBranch = "main";
       init.templateDir = "/Users/tkhalil/.git-template";
+      credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     };
   };
 }
