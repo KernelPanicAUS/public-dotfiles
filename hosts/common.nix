@@ -14,6 +14,7 @@
       experimental-features = "nix-command flakes";
       extra-platforms = "aarch64-darwin x86_64-darwin";
       download-buffer-size = "536870912";
+      trusted-users = ["root" "tkhalil"];
     };
   };
 
