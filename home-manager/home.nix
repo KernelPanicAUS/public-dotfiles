@@ -85,7 +85,16 @@
     bat.enable = true;
     bat.config.theme = "OneHalfDark";
     zoxide.enable = true;
-    fzf.enable = true;
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      defaultOptions = [
+        "--height 40%"
+        "--layout=reverse"
+        "--border"
+        "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+      ];
+    };
     jq.enable = true;
     nix-index.enable = true;
     htop.enable = true;
