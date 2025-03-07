@@ -56,6 +56,7 @@
     aspell
     aspellDicts.en
     bash-completion
+    bash
     bat
     vlc-bin
     btop
