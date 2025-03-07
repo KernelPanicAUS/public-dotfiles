@@ -6,10 +6,8 @@
   ...
 }: {
   system.configurationRevision = self.rev or self.dirtyRev or null;
-  services.nix-daemon.enable = true;
-
+  nix.enable = false;
   nix = {
-    gc.automatic = true;
     settings = {
       experimental-features = "nix-command flakes";
       extra-platforms = "aarch64-darwin x86_64-darwin";
@@ -27,7 +25,7 @@
     };
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
     activationScripts.postUserActivation.text = ''

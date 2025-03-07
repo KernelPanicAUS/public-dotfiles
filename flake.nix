@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +43,6 @@
     home-manager,
     nixpkgs,
     nixpkgs-stable,
-    determinate,
   } @ inputs: let
     system = "aarch64-darwin";
     user = "tkhalil";
@@ -55,7 +53,6 @@
         inherit system;
         specialArgs = {inherit self;};
         modules = [
-          determinate.darwinModules.default
           (import ./hosts/${systemName}.nix)
           home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
@@ -95,4 +92,3 @@
     };
   };
 }
-
