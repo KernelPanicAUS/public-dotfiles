@@ -24,6 +24,52 @@
       spull = "!git pull && git submodule sync - -recursive && git submodule update - -init - -recursive";
       spush = "push --recurse-submodules=on-demand";
     };
+    ignores = [
+      # System Files
+      ".DS_Store"
+      ".AppleDouble"
+      ".LSOverride"
+
+      # Thumbnail Cache Files
+      "._*"
+      "Thumbs.db"
+
+      # Files on External Disks
+      ".Spotlight-V100"
+      ".Trashes"
+
+      # Directories
+      ".idea/"
+      ".vscode/"
+      "__pycache__/"
+      "node_modules/"
+      "venv/"
+
+      # Compiled Files
+      "*.pyc"
+      "*.class"
+      "*.dll"
+      "*.exe"
+      "*.o"
+      "*.so"
+
+      # Logs and Databases
+      "*.log"
+      "*.sqlite"
+
+      # OS-generated Files
+      "Icon?"
+      "ehthumbs.db"
+      "Desktop.ini"
+
+      # Application-specific Files
+      ".sass-cache"
+      "*.swp"
+      ".ipynb_checkpoints"
+
+      ".direnv/**"
+      ".envrc"
+    ];
 
     extraConfig = {
       branch.autosetuprebase = "always";
