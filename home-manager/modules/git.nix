@@ -72,6 +72,14 @@
     ];
 
     extraConfig = {
+      core.pager = "${pkgs.delta}/bin/delta";
+      delta = {
+        #side-by-side = true;
+        navigate = true;
+        dark = true;
+      };
+      interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
+      merge.conflictstyle = "zdiff3";
       branch.autosetuprebase = "always";
       push.autoSetupRemote = true;
       log.decorate = true;

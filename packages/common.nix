@@ -66,6 +66,7 @@
     du-dust
     gcc
     git-filter-repo
+    delta
     killall
     neofetch
     openssh
