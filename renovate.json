@@ -27,26 +27,5 @@
     "enabled": true,
     "pinDigests": true,
     "automerge": true
-  },
-  "customDatasources": {
-    "notion-releases": {
-      "defaultRegistryUrlTemplate": "https://www.notion.com/desktop/mac-universal/download",
-      "format": "html",
-      "transformTemplates": [
-        {
-          "template": "https://desktop-release.notion-static.com/Notion-{{{version}}}-universal.dmg"
-        }
-      ]
-    }
-  },
-  "regexManagers": [
-    {
-      "fileMatch": ["^hosts/uni\\.nix$"],
-      "matchStrings": [
-        "# renovate: datasource=notion-releases depName=Notion\\s+version = \"(?<currentValue>.*?)\";"
-      ],
-      "datasourceTemplate": "notion-releases",
-      "depNameTemplate": "Notion"
-    }
-  ]
+  }
 }
