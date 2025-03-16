@@ -7,15 +7,12 @@
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
-    "extends": [
-      "schedule:weekly"
-    ]
+    "extends": ["schedule:weekly"]
   },
   "enabledManagers": [
     "nix",
     "pre-commit",
-    "github-actions",
-    "custom.regex"
+    "github-actions"
   ],
   "nix": {
     "enabled": true,
