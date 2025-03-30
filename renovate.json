@@ -17,6 +17,7 @@
   "packageRules": [
     {
       "matchManagers": ["nix"],
+      "matchFileNames": ["**/flake.lock"],
       "lockFileMaintenance": {
         "enabled": true
       }
@@ -24,7 +25,8 @@
   ],
   "nix": {
     "enabled": true,
-    "automerge": true
+    "automerge": true,
+    "fileMatch": ["(^|/)flake\\.lock$"]
   },
   "pre-commit": {
     "enabled": true,
