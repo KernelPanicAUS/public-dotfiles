@@ -1,22 +1,16 @@
 {pkgs, ...}: let
   dervify = import ./dervify.nix {inherit pkgs;};
-  alfred = dervify rec {
-    pname = "Alfred";
-    version = "5.5";
-    url = "https://cachefly.alfredapp.com/${pname}_${version}.1_2273.dmg";
-    hash = "sha256-BopF9IV/JOpu/aViwV4nDxivlQUZmN+K3+f1/7BaN6M=";
-  };
   lulu = dervify rec {
     pname = "Lulu";
-    version = "2.9.6";
+    version = "3.1.2";
     url = "https://github.com/objective-see/${pname}/releases/download/v${version}/${pname}_${version}.dmg";
-    hash = "sha256-OagnURumn+Aw5XBEbdz0LSEuhc3abY8h+RlXarzKgBk=";
+    hash = "sha256-sZ7gNMSq30StcwPettHoUFjTGYtEYxIXfOGQdASLiII=";
   };
   orbstack = dervify rec {
     pname = "Orbstack";
-    version = "1.9.2";
-    url = "https://cdn-updates.orbstack.dev/arm64/OrbStack_v1.9.2_18814_arm64.dmg";
-    hash = "sha256-rNKfP6+vbxUGfzdYqy6F+iSn5XzZw1MN0EXL7odFvXI=";
+    version = "1.10.2";
+    url = "https://orbstack.dev/download/stable/latest/arm64";
+    hash = "sha256-Uqu83Eurp/MQErv7WnWMFiWw6KK9E6nbX4ENW+OSXpk=";
     useHdiutil = true;
   };
   hammerspoon = dervify rec {
@@ -42,9 +36,9 @@
   };
   ghostty = dervify rec {
     pname = "Ghostty";
-    version = "1.0.1";
-    url = "https://release.files.ghostty.org/${version}/${pname}.dmg";
-    hash = "sha256-CR96Kz9BYKFtfVKygiEku51XFJk4FfYqfXACeYQ3JlI=";
+    version = "1.1.2";
+    url = "https://release.files.ghostty.org/1.1.2/Ghostty.dmg";
+    hash = "sha256-1K0BOWg0ykR/pdCE6/b7XUSVcoD6ryLqRz6WBnUcSOE=";
     useHdiutil = true;
   };
   basePackages = with pkgs; [
@@ -84,6 +78,7 @@
     dive
     arc-browser
     cmake
+    tailscale
 
     # Encryption and security tools
     just
@@ -159,7 +154,6 @@
   commonPackages =
     basePackages
     ++ [
-      alfred
       lulu
       orbstack
       hammerspoon

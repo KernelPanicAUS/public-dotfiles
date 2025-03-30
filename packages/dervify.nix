@@ -2,7 +2,7 @@
   pname,
   version,
   url,
-  hash,
+  hash ? "",
   format ? "dmg", # can be "dmg" or "zip"
   useHdiutil ? false,
   ...
@@ -11,7 +11,6 @@
     inherit pname version;
     src = pkgs.fetchurl {
       inherit url hash;
-      curlOptsList = ["-HUser-Agent: Wget/1.21.4" "-HAccept: */*"];
     };
     sourceRoot = ".";
   };
