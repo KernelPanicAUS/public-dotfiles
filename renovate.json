@@ -22,8 +22,10 @@
   "packageRules": [
     {
       "matchManagers": ["nix"],
-      "matchFileNames": ["flake.lock"],
-      "enabled": true
+      "enabled": true,
+      "lockFileMaintenance": {
+        "enabled": true
+      }
     }
   ],
   "pre-commit": {
