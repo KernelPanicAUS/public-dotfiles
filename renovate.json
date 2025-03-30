@@ -4,29 +4,29 @@
     "config:recommended"
   ],
   "automerge": true,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true,
-    "extends": ["schedule:weekly"]
-  },
   "enabledManagers": [
     "nix",
     "pre-commit",
     "github-actions"
   ],
-  "packageRules": [
-    {
-      "matchManagers": ["nix"],
-      "matchFileNames": ["flake.lock"],
-      "lockFileMaintenance": {
-        "enabled": true
-      }
-    }
-  ],
   "nix": {
     "enabled": true,
-    "automerge": true
+    "automerge": true,
+    "fileMatch": ["^flake\\.lock$"]
   },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "extends": ["schedule:weekly"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["^flake\\.lock$"],
+      "matchStrings": [".*"],
+      "datasourceTemplate": "git-tags",
+      "depNameTemplate": "flake-lock-maintenance"
+    }
+  ],
   "pre-commit": {
     "enabled": true,
     "automerge": true
