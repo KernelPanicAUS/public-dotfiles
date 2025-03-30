@@ -3,11 +3,8 @@
   "extends": [
     "config:recommended"
   ],
-  "automerge": true,
   "enabledManagers": [
-    "nix",
-    "pre-commit",
-    "github-actions"
+    "nix"
   ],
   "nix": {
     "enabled": true,
@@ -27,14 +24,5 @@
         "enabled": true
       }
     }
-  ],
-  "pre-commit": {
-    "enabled": true,
-    "automerge": true
-  },
-  "github-actions": {
-    "enabled": true,
-    "pinDigests": true,
-    "automerge": true
-  }
+  ]
 }
