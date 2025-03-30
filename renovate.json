@@ -19,12 +19,11 @@
     "automerge": true,
     "extends": ["schedule:weekly"]
   },
-  "regexManagers": [
+  "packageRules": [
     {
-      "fileMatch": ["^flake\\.lock$"],
-      "matchStrings": [".*"],
-      "datasourceTemplate": "git-tags",
-      "depNameTemplate": "flake-lock-maintenance"
+      "matchManagers": ["nix"],
+      "matchFileNames": ["flake.lock"],
+      "enabled": true
     }
   ],
   "pre-commit": {
