@@ -20,8 +20,8 @@
     {
       "matchManagers": ["nix"],
       "enabled": true,
-      "group-name": "nix dependencies",
-      "group-slug": "nix-deps",
+      "groupName": "nix dependencies",
+      "groupSlug": "nix-deps",
       "lockFileMaintenance": {
         "enabled": true
       }
