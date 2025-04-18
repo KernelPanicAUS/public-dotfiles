@@ -78,7 +78,6 @@
     dive
     arc-browser
     cmake
-    python39
 
     # Encryption and security tools
     just
