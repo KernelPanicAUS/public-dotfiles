@@ -8,7 +8,7 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     oh-my-zsh.enable = true;
-    oh-my-zsh.plugins = ["git" "gcloud" "kubectl" "git-prompt"];
+    oh-my-zsh.plugins = ["git" "gcloud" "kubectl" "git-prompt" "kube-ps1"];
     plugins = [
       {
         name = "zsh-autosuggestions";
@@ -52,6 +52,7 @@
       export GPG_TTY="$(tty)"
       export SSH_AUTH_SOCKET=$(gpgconf --list-dirs agent-ssh-socket)
       export ZSH_THEME="pi"
+      PROMPT=$PROMPT'$(kube_ps1)'
       autoload -U history-search-end #needed for -end
       zle -N history-beginning-search-backward-end history-search-end
       zle -N history-beginning-search-forward-end history-search-end

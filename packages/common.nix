@@ -78,7 +78,7 @@
     dive
     arc-browser
     cmake
-    tailscale
+    python39
 
     # Encryption and security tools
     just
@@ -92,6 +92,7 @@
     # Cloud tools
     kubectl
     k9s
+    kubeconform
     tflint
     pre-commit
     terraform-ls
