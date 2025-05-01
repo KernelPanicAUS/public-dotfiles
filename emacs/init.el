@@ -195,7 +195,40 @@
 
   (bitshifta/leader-keys
     "t" '(:ignore t :which-key "toggles")
-    "tt" '(counsel-load-theme :which-key "choose theme")))
+    "tt" '(counsel-load-theme :which-key "choose theme")
+    "ts" '(hydra-text-scale/body :which-key "scale-text")
+
+    "p" '(:ignore t :which-key "project")
+    "pp" '(counsel-projectile-switch-project :which-key "switch project")
+    "pf" '(counsel-projectile-find-file :which-key "find project file")
+    "pd" '(counsel-projectile-find-dir :which-key "find project dir (dired)")
+    "ps" '(counsel-projectile-ag :which-key "search project (ag/rg)")
+    "pb" '(counsel-projectile-switch-to-buffer :which-key "switch project buffer")
+
+    "f" '(:ignore t :which-key "file")
+    "ff" '(counsel-find-file :which-key "find file")
+    "fr" '(counsel-recentf :which-key "find recent file")
+
+    "b" '(:ignore t :which-key "buffer")
+    "bb" '(counsel-switch-buffer :which-key "switch buffer")
+    "bi" '(counsel-ibuffer :which-key "ibuffer")
+    "bk" '(kill-current-buffer :which-key "kill current buffer")
+
+    "g" '(:ignore t :which-key "git (magit)")
+    "gg" '(magit-status :which-key "magit status")
+    "gb" '(magit-blame :which-key "git blame")
+    "gl" '(magit-log-current :which-key "git log current")
+    "gf" '(magit-fetch :which-key "git fetch")
+    "gp" '(magit-push :which-key "git push")
+
+    "j" '(:ignore t :which-key "justl")
+    "jj" '(justl-select-recipe-and-run :which-key "run recipe...")
+    "jr" '(justl-run-default-target :which-key "run default recipe")
+    "jl" '(justl :which-key "list recipes")
+    "jh" '(justl-help-popup :which-key "help popup")
+    "je" '(justl-exec-recipe :which-key "execute recipe")
+    )
+  )
 
 ;; Evil
 (defun bitshifta/evil-hook ()
@@ -667,4 +700,13 @@
   ;; Enables ligature checks globally in all buffers. You can also do it
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
+;; Justl -- used for Justfiles
+(use-package justl
+  :ensure t
+  :init
+  (let ((just-path (executable-find "just")))
+    (if just-path
+        (setq justl-executable just-path)
+      (warn "just executable not found in exec-path. justl might not work.")))
+  )
 ;;; init.el ends here
