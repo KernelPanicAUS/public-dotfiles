@@ -46,7 +46,7 @@ in {
           "/Applications/Firefox.app"
           "${pkgs.slack}/Applications/Slack.app"
           "${pkgs.alacritty}/Applications/Alacritty.app"
-          "${pkgs.zoom-us}/Applications/zoom.us.app"
+          #"${pkgs.zoom-us}/Applications/zoom.us.app"
           "/System/Applications/System Settings.app"
         ];
       };

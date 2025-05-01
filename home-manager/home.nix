@@ -115,7 +115,7 @@
       enable = pkgs.hostPlatform.isLinux;
       enableExtraSocket = true;
       enableSshSupport = true;
-      pinentryPackage = "mac";
+      pinentry.package = "mac";
       defaultCacheTtl = 34560000;
       maxCacheTtl = 34560000;
     };

@@ -10,7 +10,7 @@
     pname = "Orbstack";
     version = "1.10.2";
     url = "https://orbstack.dev/download/stable/latest/arm64";
-    hash = "sha256-Uqu83Eurp/MQErv7WnWMFiWw6KK9E6nbX4ENW+OSXpk=";
+    hash = "sha256-Hq0hXH7fniM1QkU9SXR/07lQXdG5uilEVV+AMC3oLGc=";
     useHdiutil = true;
   };
   hammerspoon = dervify rec {
@@ -137,7 +137,7 @@
 
     # Communication/Chat
     slack
-    zoom-us
+    #zoom-us
 
     # nix
     cachix
