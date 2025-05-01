@@ -48,7 +48,7 @@
         };
       }
     ];
-    initExtra = ''
+    initContent = ''
       export GPG_TTY="$(tty)"
       export SSH_AUTH_SOCKET=$(gpgconf --list-dirs agent-ssh-socket)
       export ZSH_THEME="pi"
