@@ -16,7 +16,7 @@
     hash = "sha256-+s31ix5Ce4JNqbPDKBrWxz+3YR5QNv/CKLHLXrxsIao=";
     format = "dmg";
   };
-  additionalPackages = with pkgs; [lmstudio mas notion];
+  additionalPackages = with pkgs; [mas notion];
 in {
   environment.systemPackages = common.commonPackages ++ additionalPackages;
   imports = [./common.nix];

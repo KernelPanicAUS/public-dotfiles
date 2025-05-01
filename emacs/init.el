@@ -19,7 +19,7 @@
  'default nil
  :font "BerkeleyMono Nerd Font Mono Plus Font Awesome Plus Font Awesome Extension Plus Octicons Plus Power Symbols Plus Codicons Plus Pomicons Plus Font Logos Plus Material Design Icons Plus Weather Icons"
  :height 200) ;; set font
-
+(set-fontset-font t nil "Symbols Nerd Font Mono" nil 'append)
 (global-auto-revert-mode) ;; emacs will reload buffer from changed file on disk.
 
 (defvar bootstrap-version)
@@ -141,10 +141,13 @@
   :init
   (doom-modeline-mode 1)
   ;;  (battery)
+  :after (nerd-icons)
   :config
   (setq fancy-battery-mode 1)
   (setq doom-modeline-battery t)
   (setq doom-modeline-icon t)
+  (setq doom-modeline-major-mode-icon-identifier 'nerd-icons)
+  (setq doom-modeline-unicode-fallback t)
   (setq doom-modeline-project-detection 'auto)
   (setq doom-modeline-height 45)
   (setq doom-modeline-bar-width 6)
@@ -153,7 +156,15 @@
   (setq doom-modeline-major-mode-color-icon t))
 
 ;; All the icons!
-(use-package all-the-icons)
+(use-package all-the-icons
+  :config
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package nerd-icons
+  :config
+  (unless (find-font (font-spec :name "Symbols Nerd Font Mono"))
+    (nerd-icons-install-fonts t)))
 
 ;; Doom Themes
 (use-package doom-themes
@@ -375,10 +386,6 @@
   :after org
   :hook (org-mode . bitshifta/org-mode-visual-fill))
 
-;; all-the-icons
-(use-package all-the-icons
-  ;;:if (display-graphic-p))
-  )
 ;; treemacs - file navigator
 (use-package treemacs)
 (use-package treemacs-evil
@@ -402,7 +409,7 @@
   (dashboard-setup-startup-hook)
   :custom
   (dashboard-startup-banner 'logo)
-  (dashboard-banner-logo-title "( E M A C S )")
+  (dashboard-banner-logo-title "( KernelPanicAUS 😎)")
   (dashboard-init-info "")
   ;;(setq dashboard-items nil)
   (dashboard-projects-backend 'projectile)

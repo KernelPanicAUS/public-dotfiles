@@ -36,8 +36,8 @@
   };
   ghostty = dervify rec {
     pname = "Ghostty";
-    version = "1.1.2";
-    url = "https://release.files.ghostty.org/1.1.2/Ghostty.dmg";
+    version = "1.1.3";
+    url = "https://release.files.ghostty.org/1.1.3/Ghostty.dmg";
     hash = "sha256-1K0BOWg0ykR/pdCE6/b7XUSVcoD6ryLqRz6WBnUcSOE=";
     useHdiutil = true;
   };
@@ -78,6 +78,8 @@
     dive
     arc-browser
     cmake
+    tailscale
+    mtr
 
     # Encryption and security tools
     just
