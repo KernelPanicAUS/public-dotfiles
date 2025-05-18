@@ -26,12 +26,14 @@
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;
+  system.primaryUser ="tkhalil";
 
   system = {
-    activationScripts.postUserActivation.text = ''
-      # Following line should allow us to avoid a logout/login cycle
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
+    
+    # activationScripts.postUserActivation.text = ''
+    #   # Following line should allow us to avoid a logout/login cycle
+    #   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    # '';
 
     stateVersion = 4;
     defaults = {
