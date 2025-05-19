@@ -38,7 +38,7 @@
     pname = "Ghostty";
     version = "1.1.3";
     url = "https://release.files.ghostty.org/1.1.3/Ghostty.dmg";
-    hash = "sha256-1K0BOWg0ykR/pdCE6/b7XUSVcoD6ryLqRz6WBnUcSOE=";
+    hash = "sha256-ZOUUGI9UlZjxZtbctvjfKfMz6VTigXKikB6piKFPJkc=";
     useHdiutil = true;
   };
   basePackages = with pkgs; [
