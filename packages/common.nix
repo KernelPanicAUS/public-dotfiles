@@ -10,7 +10,7 @@
     pname = "Orbstack";
     version = "1.10.2";
     url = "https://orbstack.dev/download/stable/latest/arm64";
-    hash = "sha256-Hq0hXH7fniM1QkU9SXR/07lQXdG5uilEVV+AMC3oLGc=";
+    hash = "sha256-/zujkmctMdJUm3d7Rjjeic8QrvWSlEAUhjFgouBXeNw=";
     useHdiutil = true;
   };
   hammerspoon = dervify rec {
