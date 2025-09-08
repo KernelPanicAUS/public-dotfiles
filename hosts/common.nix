@@ -22,14 +22,28 @@
     hostPlatform = "aarch64-darwin";
     config = {
       allowUnfree = true;
+      permittedInsecurePackages = [
+        "arc-browser-1.109.0-67185"
+        "arc-browser-1.106.0-66192"
+      ];
     };
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;
-  system.primaryUser ="tkhalil";
+
+  system.primaryUser = "tkhalil";
+
+  networking = {
+    applicationFirewall = {
+      enableStealthMode = false;
+      allowSignedApp = false;
+      allowSigned = true;
+      enable = true;
+      blockAllIncoming = false;
+    };
+  };
 
   system = {
-    
     # activationScripts.postUserActivation.text = ''
     #   # Following line should allow us to avoid a logout/login cycle
     #   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
@@ -59,13 +73,6 @@
           DateFormat = "EEE d MMM HH:mm:ss";
           FlashDateSeparators = false;
         };
-      };
-      alf = {
-        allowdownloadsignedenabled = 0;
-        allowsignedenabled = 1;
-        globalstate = 1;
-        loggingenabled = 0;
-        stealthenabled = 0;
       };
       dock = {
         appswitcher-all-displays = false;
