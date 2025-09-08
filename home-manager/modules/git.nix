@@ -73,8 +73,9 @@
 
     extraConfig = {
       core.pager = "${pkgs.delta}/bin/delta";
+      core.editor = "emacsclient -c -a ''";
       delta = {
-        #side-by-side = true;
+        side-by-side = true;
         navigate = true;
         dark = true;
       };
@@ -89,7 +90,7 @@
       diff.submodule = "log";
       diff.wsErrorHighlight = "all";
       core.excludesfile = "~/.gitignore";
-      core.editor = "/usr/bin/vim -f";
+#      core.editor = "/usr/bin/vim -f";
       rebase.autoStash = true;
       status.submoduleSummary = true;
       init.defaultBranch = "main";
