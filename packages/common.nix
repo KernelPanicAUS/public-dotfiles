@@ -80,6 +80,9 @@
     cmake
     tailscale
     mtr
+    libvterm-neovim
+    glibtool
+    cmake
 
     # Encryption and security tools
     just
