@@ -12,6 +12,7 @@
 (set-fringe-mode 10)   ; Give some breathing room
 (battery)
 (menu-bar-mode -1)     ; Disable the menu bar
+(setq mac-option-modifier 'meta)
 ;; Set up the visible bell
 (setq visible-bell t)
 (setq make-backup-files nil)
@@ -210,11 +211,11 @@
     "ts" '(hydra-text-scale/body :which-key "scale-text")
 
     "p" '(:ignore t :which-key "project")
-    "pp" '(counsel-projectile-switch-project :which-key "switch project")
-    "pf" '(counsel-projectile-find-file :which-key "find project file")
-    "pd" '(counsel-projectile-find-dir :which-key "find project dir (dired)")
-    "ps" '(counsel-projectile-ag :which-key "search project (ag/rg)")
-    "pb" '(counsel-projectile-switch-to-buffer :which-key "switch project buffer")
+    "pp" '(projectile-switch-project :which-key "switch project")
+    "pf" '(projectile-find-file :which-key "find project file")
+    "pd" '(projectile-find-dir :which-key "find project dir (dired)")
+    "ps" '(projectile-ag :which-key "search project (ag/rg)")
+    "pb" '(projectile-switch-to-buffer :which-key "switch project buffer")
 
     "f" '(:ignore t :which-key "file")
     "ff" '(counsel-find-file :which-key "find file")
@@ -340,10 +341,40 @@
 
 (use-package org
   :hook (org-mode . bitshifta/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▼"
-	org-hide-emphasis-markers t
-	org-todo-keywords (quote ((sequenece "TODO(t)" "DOING(g)" "|" "DONE(d)")))))
+ :init
+  (setq org-meetings-file "~/Documents/org/meetings.org")
+  :custom
+  (org-element-use-cache t)
+  (org-ellipsis " ▼")
+  (org-hide-emphasis-markers t)
+  (org-todo-keywords '((sequence "TODO(t)" "DOING(g)" "|" "DONE(d)")))
+  (org-meetings-file "~/Documents/org/meetings.org")
+  (org-directory "~/Documents/org/")
+  (org-default-notes-file "~/Documents/org/refile.org")
+  (org-agenda-files (directory-files "~/Documents/org/" "\\.org$"))
+  (org-capture-templates
+  '(("m" "Work Meeting"
+     entry (file+olp+datetree "~/Documents/org/meetings.org" "Day to Day Meetings")
+     "* %^{What are we discussing?}
+:PROPERTIES:
+:ID: %(org-id-new)
+:Attendees: %^{Attendees}
+:END:
+** When: %^{When is the meeting?}
+** Prep/Links: %^{Notes}
+** Notes:"
+     :prepend t
+     :clock-in t
+     :clock-resume t
+     :time-prompt t)))
+  :general
+  ;; Global org keybindings
+  ("C-c a" 'org-agenda
+   "C-c c" 'org-capture
+   "C-c l" 'org-store-link))
+(use-package org-modern
+  :hook
+  (org-mode . org-modern-mode))
 
 (use-package org-bullets
   :after org
@@ -351,7 +382,7 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(setq org-agenda-files (directory-files "~/Documents/org/" "\\.org$"))
+;;(setq org-agenda-files (directory-files "~/Documents/org/" "\\.org$"))
 
 (use-package org-roam
   :ensure t
@@ -460,7 +491,7 @@
 
 
 (use-package vterm
-  :load-path "/Users/tkhalil/emacs-libvterm/"
+  :init (setq-default vterm-always-compile-module t)
   :config
   (setq vterm-shell "/Users/tkhalil/.nix-profile/bin/zsh"))
 
@@ -638,7 +669,7 @@
    "M-g p" '(flycheck-previous-error :which-key "Previous error"))
   :config
   (global-flycheck-mode 1))
-(use-package consult-flycheck)
+;;(use-package consult-flycheck)
 (use-package flycheck-inline
   :hook (flycheck-mode . flycheck-inline-mode))
 (use-package flycheck-actionlint
@@ -716,4 +747,32 @@
         (setq justl-executable just-path)
       (warn "just executable not found in exec-path. justl might not work.")))
   )
+
+
+(use-package outline-yaml
+  :ensure t
+  :straight (outline-yaml
+             :type git
+             :host github
+             :repo "jamescherti/outline-yaml.el")
+  :hook
+  ((yaml-mode . outline-yaml-minor-mode)
+   (yaml-ts-mode . outline-yaml-minor-mode)))
+
+(use-package ready-player
+  :ensure t
+  :config
+  (ready-player-mode +1))
+
+(use-package forge
+  :after magit
+  :config
+  (setq ghub-use-workaround-for-emacs-bug 'force)
+  
+  (defun bitshifta/ghub-token-from-gh (host username package &optional nocreate forge)
+    (string-trim (shell-command-to-string "gh auth token")))
+  
+
+  (advice-add 'ghub--token :override #'bitshifta/ghub-token-from-gh))
+
 ;;; init.el ends here
