@@ -8,6 +8,7 @@
   ...
 } @ args: let
   baseAttrs = {
+    name = "${pname}-${version}";  # Explicitly set name to include version
     inherit pname version;
     src = pkgs.fetchurl {
       inherit url hash;
@@ -19,6 +20,7 @@
     runHook preInstall
     mkdir -p "$out/Applications" "$out/bin"
     cp -r *.app "$out/Applications"
+    runHook postInstall
   '';
 
   zipAttrs =
