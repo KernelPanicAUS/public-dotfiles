@@ -2,9 +2,9 @@
   dervify = import ./dervify.nix {inherit pkgs;};
   lulu = dervify rec {
     pname = "Lulu";
-    version = "3.1.2";
+    version = "3.1.5";
     url = "https://github.com/objective-see/${pname}/releases/download/v${version}/${pname}_${version}.dmg";
-    hash = "sha256-sZ7gNMSq30StcwPettHoUFjTGYtEYxIXfOGQdASLiII=";
+    hash = "sha256-eFrOZv6KSZlmLtyPORrD2Low/e7m7HU1WeuT/w8Us7I=";
   };
   orbstack = dervify rec {
     pname = "Orbstack";

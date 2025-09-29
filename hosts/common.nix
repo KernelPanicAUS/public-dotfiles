@@ -9,10 +9,16 @@
   nix.enable = false;
   nix = {
     settings = {
+      eval-cores = 0;
+      extra-experimental-features = "parallel-eval";
       experimental-features = "nix-command flakes";
       extra-platforms = "aarch64-darwin x86_64-darwin";
       download-buffer-size = "536870912";
+      substituters = ["https://nix-community.cachix.org"];
       trusted-users = ["root" "tkhalil"];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
   };
 
