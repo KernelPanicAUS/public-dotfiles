@@ -28,10 +28,6 @@
     hostPlatform = "aarch64-darwin";
     config = {
       allowUnfree = true;
-      permittedInsecurePackages = [
-        "arc-browser-1.109.0-67185"
-        "arc-browser-1.106.0-66192"
-      ];
     };
   };
 
