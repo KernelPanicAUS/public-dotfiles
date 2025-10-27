@@ -35,10 +35,10 @@
     format = "zip";
   };
   ghostty = dervify rec {
+    version = "1.2.3";
     pname = "Ghostty";
-    version = "1.2.0";
-    url = "https://release.files.ghostty.org/1.2.0/Ghostty.dmg";
-    hash = "sha256-QyHKQ00iRxWS6GwPfRAi9RDSlgX/50N0+MASmnPGAo4=";
+    url = "https://release.files.ghostty.org/1.2.3/Ghostty.dmg";
+    hash = "sha256-817pHxFuKAJ6ufje9FCYx1dbRLQH/4g6Lc0phcSDIGs=";
     useHdiutil = true;
   };
   basePackages = with pkgs; [
@@ -76,7 +76,6 @@
     unrar
     unzip
     dive
-    arc-browser
     cmake
     tailscale
     mtr
@@ -121,8 +120,6 @@
     nodePackages.typescript-language-server
     nodePackages.live-server
     nodePackages.nodemon
-    nodePackages.prettier
-    nodePackages.npm
     nodejs
 
     # Source code management, Git, GitHub tools
