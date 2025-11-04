@@ -57,7 +57,7 @@
     tailscale
     coreutils
     difftastic
-    du-dust
+    dust
     gcc
     git-filter-repo
     delta
@@ -82,6 +82,7 @@
     libvterm-neovim
     glibtool
     cmake
+    nix-output-monitor
 
     # Encryption and security tools
     just
@@ -112,7 +113,7 @@
     jpegoptim
     meslo-lgs-nf
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     pngquant
 
     # Node.js development tools
