@@ -52,7 +52,7 @@
     generateSystemDerivation = systemName:
       nix-darwin.lib.darwinSystem {
         inherit system;
-        specialArgs = {inherit self;};
+        specialArgs = {inherit self pkgs-stable;};
         modules = [
           (import ./hosts/${systemName}.nix)
           home-manager.darwinModules.home-manager

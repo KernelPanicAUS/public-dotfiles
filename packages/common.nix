@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, pkgs-stable ? pkgs, ...}: let
   dervify = import ./dervify.nix {inherit pkgs;};
   lulu = dervify rec {
     pname = "Lulu";
@@ -10,7 +10,7 @@
     pname = "Orbstack";
     version = "1.10.2";
     url = "https://orbstack.dev/download/stable/latest/arm64";
-    hash = "sha256-/zujkmctMdJUm3d7Rjjeic8QrvWSlEAUhjFgouBXeNw=";
+    hash = "sha256-YBiJVRzf3H/u4Ui3/bBID6C6XA2wvo8cBH/IQIhqdXE=";
     useHdiutil = true;
   };
   hammerspoon = dervify rec {
@@ -31,7 +31,7 @@
     pname = "istat-menus";
     version = "7.10.4";
     url = "https://cdn.istatmenus.app/files/istatmenus7/versions/iStatMenus7.10.4.zip";
-    hash = "sha256-9fw0J492ywzuKXGR47WAjL6IROCRByCn7KsbQecUU+w=";
+    hash = "sha256-lvB76NTtFKzxYXFsHk/2Ykl1nt+ZzEe+3euQdipoWB8=";
     format = "zip";
   };
   ghostty = dervify rec {
@@ -83,6 +83,8 @@
     glibtool
     cmake
     nix-output-monitor
+    watch
+    ispell
 
     # Encryption and security tools
     just
@@ -119,7 +121,6 @@
     # Node.js development tools
     fzf
     nodePackages.typescript-language-server
-    nodePackages.live-server
     nodePackages.nodemon
     nodejs
 
@@ -131,6 +132,7 @@
     emacs
     obsidian
     kubectx
+    claude-code
 
     # Text and terminal utilities
     htop

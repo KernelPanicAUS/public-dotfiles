@@ -1,12 +1,13 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   lib,
   self,
   system,
   ...
 }: let
-  common = import ../packages/common.nix {inherit pkgs;};
+  common = import ../packages/common.nix {inherit pkgs pkgs-stable;};
   gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
     gke-gcloud-auth-plugin
     core

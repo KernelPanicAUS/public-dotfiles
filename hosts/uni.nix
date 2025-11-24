@@ -1,12 +1,13 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   lib,
   self,
   system,
   ...
 }: let
-  common = import ../packages/common.nix {inherit pkgs;};
+  common = import ../packages/common.nix {inherit pkgs pkgs-stable;};
   dervify = import ../packages/dervify.nix {inherit pkgs;};
   notion = dervify rec {
     pname = "Notion";
