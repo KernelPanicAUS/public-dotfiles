@@ -94,6 +94,7 @@
     libfido2
     pinentry-emacs
     pinentry_mac
+    yubikey-manager 
 
     # Cloud tools
     kubectl

@@ -52,6 +52,8 @@
       export GPG_TTY="$(tty)"
       export SSH_AUTH_SOCKET=$(gpgconf --list-dirs agent-ssh-socket)
       export ZSH_THEME="pi"
+      export K9S_EDITOR="${pkgs.neovim}/bin/nvim"
+      export KUBE_EDITOR="${pkgs.neovim}/bin/nvim"
       PROMPT=$PROMPT'$(kube_ps1)'
       autoload -U history-search-end #needed for -end
       zle -N history-beginning-search-backward-end history-search-end
