@@ -39,6 +39,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;;; Network timeout configuration
+;; Set reasonable timeouts to prevent hanging on network operations
+(setq url-queue-timeout 30)  ; 30 seconds for queued URL requests
+(setq url-queue-parallel-processes 6)
+(setq url-http-attempt-keepalives nil)  ; Disable keepalives to avoid hanging connections
+
 ;;; Native-comp-pgtk
 (when (featurep 'native-compile)
   (setq comp-deferred-compilation t
@@ -49,10 +55,12 @@
         package-native-compile t))
 
 (use-package exec-path-from-shell
+  :demand t
   :commands exec-path-from-shell-initialize
   :config
   (when (or (memq window-system '(mac ns x)) (daemonp))
     (exec-path-from-shell-initialize)))
+
 (use-package use-package-ensure-system-package)
 
 (setq vc-follow-symlinks t
@@ -555,6 +563,45 @@
   :hook (((tsx-ts-mode typescript-ts-mode) . bitshifta/typescript-setup)
          (tsx-ts-mode . bitshifta/tsx-font-lock-fix)))
 
+;; Java LSP support
+(use-package lsp-java
+  :after lsp-mode
+  :config
+  ;; Let direnv/nix provide the Java path
+  (setq lsp-java-vmargs '("-XX:+UseParallelGC"
+                          "-XX:GCTimeRatio=4"
+                          "-XX:AdaptiveSizePolicyWeight=90"
+                          "-Dsun.zip.disableMemoryMapping=true"
+                          "-Xmx4G"
+                          "-Xms100m"))
+  :hook
+  (java-mode . lsp-deferred))
+
+;; Kotlin mode and LSP support
+(use-package kotlin-mode
+  :mode "\\.kt\\'"
+  :config
+  ;; Configure kotlin-language-server path if manually installed
+  ;; Uncomment and set the path if you want to use a pre-installed server
+  ;; (setq lsp-clients-kotlin-server-executable "/path/to/kotlin-language-server")
+
+  ;; Alternative: Install kotlin-language-server via Nix and configure the path
+  ;; (with-eval-after-load 'lsp-kotlin
+  ;;   (setq lsp-kotlin-language-server-path "kotlin-language-server"))
+
+  (defun bitshifta/kotlin-lsp-setup ()
+    "Setup Kotlin LSP with timeout handling"
+    (condition-case err
+        (progn
+          ;; Set a timeout for the LSP server startup
+          (let ((lsp-response-timeout 30))
+            (lsp-deferred)))
+      (error
+       (message "Kotlin LSP failed to start: %s" (error-message-string err))
+       (message "Install kotlin-language-server manually or via: nix-env -iA nixpkgs.kotlin-language-server"))))
+  :hook
+  (kotlin-mode . bitshifta/kotlin-lsp-setup))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports lsp-completion-at-point)
   :custom
@@ -562,11 +609,21 @@
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-diagnostic-clean-after-change t)
   (lsp-modeline-diagnostics-enable nil)
-  (lsp-diagnostics-provider :flycheck)
+  ;;(lsp-diagnostics-provider :flycheck)
   (lsp-signature-render-documentation nil)
   (lsp-inlay-hint-enable t)
   (lsp-disabled-clients '())
-  (lsp-semgrep-languages '() "Disable this stupid lsp"))
+  (lsp-semgrep-languages '() "Disable this stupid lsp")
+  ;; Installation and timeout settings
+  (lsp-response-timeout 30 "Timeout for LSP responses in seconds")
+  (lsp-enable-file-watchers nil "Disable file watchers to reduce overhead")
+  (lsp-server-install-dir (expand-file-name "~/.config/emacs/lsp-servers/") "LSP server install directory")
+  (lsp-auto-configure t)
+  (lsp-log-io nil "Disable IO logging for better performance")
+  :init
+  ;; Improve performance
+  (setq read-process-output-max (* 1024 1024)) ;; 1MB
+  (setq gc-cons-threshold 100000000))
 
 (use-package dap-mode)
 
@@ -655,40 +712,6 @@
   (emacs-lisp-mode     . setup-elisp-completion)
   (lsp-completion-mode . setup-lsp-completion))
 
-(use-package flycheck
-  :after general
-  :commands (global-flycheck-mode)
-  :custom
-  (flycheck-display-erors-delay 0.15)
-  (flycheck-emacs-lisp-load-path 'inherit)
-  :general
-  (:states '(normal visual)
-           "g[" 'flycheck-next-error
-           "g]" 'flycheck-previous-error)
-  ("M-g n" '(flycheck-next-error :which-key "Next error")
-   "M-g p" '(flycheck-previous-error :which-key "Previous error"))
-  :config
-  (global-flycheck-mode 1))
-;;(use-package consult-flycheck)
-(use-package flycheck-inline
-  :hook (flycheck-mode . flycheck-inline-mode))
-(use-package flycheck-actionlint
-  :after flycheck
-  :config (flycheck-actionlint-setup))
-(use-package flycheck-relint
-  :after flycheck
-  :commands (flycheck-relint-setup)
-  :config (flycheck-relint-setup))
-(use-package flycheck-package
-  :after (flycheck elisp-mode)
-  :commands (flycheck-package-setup)
-  :config (flycheck-package-setup))
-(use-package flycheck-golangci-lint
-  :after (flycheck go-ts-mode)
-  :straight (:host github :repo "forgoty/flycheck-golangci-lint")
-  :commands (flycheck-golangci-lint-setup)
-  :config
-  (flycheck-golangci-lint-setup))
 
 (use-package lsp-biome
   :straight (:host github :repo "cxa/lsp-biome" :files ("lsp-biome.el"))
@@ -748,7 +771,12 @@
       (warn "just executable not found in exec-path. justl might not work.")))
   )
 
-
+(use-package exec-path-from-shell
+  :ensure t
+  :straight (exec-path-from-shell
+	     :type git
+	     :host github
+	     :repo "purcell/exec-path-from-shell"))
 (use-package outline-yaml
   :ensure t
   :straight (outline-yaml
@@ -774,5 +802,11 @@
   
 
   (advice-add 'ghub--token :override #'bitshifta/ghub-token-from-gh))
+
+(use-package claude-code-ide
+  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
 
 ;;; init.el ends here
