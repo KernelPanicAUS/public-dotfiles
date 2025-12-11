@@ -112,10 +112,12 @@
   };
   services = {
     gpg-agent = {
-      enable = pkgs.hostPlatform.isLinux;
+      enable = true;
       enableExtraSocket = true;
       enableSshSupport = true;
-      pinentry.package = "mac";
+      pinentry = {
+        package = pkgs.pinentry_mac;
+      };
       defaultCacheTtl = 34560000;
       maxCacheTtl = 34560000;
     };
