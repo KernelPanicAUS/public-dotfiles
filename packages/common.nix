@@ -43,6 +43,7 @@ let
     nix-output-monitor
     watch
     ispell
+    zstd
 
     # Encryption and security tools
     just

@@ -11,6 +11,7 @@
     ./modules/zsh.nix
     ./modules/tmux.nix
     ./modules/alacritty.nix
+    ./modules/ghostty.nix
     ./modules/darwin.nix
     ./modules/linux.nix
   ];
