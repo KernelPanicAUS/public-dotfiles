@@ -72,7 +72,7 @@
       ${lib.concatStringsSep "\n"
         (lib.mapAttrsToList
           (name: src: "name=${name}; ln -s ${src}/parser $out/\lib${name}${
-            if pkgs.system == "aarch64-darwin"
+            if pkgs.stdenv.hostPlatform.system == "aarch64-darwin"
             then ".dylib"
             else ".so"
           }")
