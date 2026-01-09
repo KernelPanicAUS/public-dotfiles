@@ -7,7 +7,8 @@
   system,
   ...
 }: let
-  common = import ../packages/common.nix {inherit pkgs pkgs-stable;};
+  common = import ../../packages/common.nix {inherit pkgs pkgs-stable;};
+  darwin = import ../../packages/darwin.nix {inherit pkgs pkgs-stable;};
   gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
     gke-gcloud-auth-plugin
     core
@@ -22,9 +23,9 @@
     kcat
   ];
 in {
-  imports = [./common.nix];
+  imports = [../../modules/darwin/common.nix];
 
-  environment.systemPackages = common.commonPackages ++ additionalPackages;
+  environment.systemPackages = common.basePackages ++ darwin.darwinPackages ++ additionalPackages;
   homebrew = {
     enable = true;
     onActivation = {

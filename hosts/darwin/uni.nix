@@ -7,8 +7,9 @@
   system,
   ...
 }: let
-  common = import ../packages/common.nix {inherit pkgs pkgs-stable;};
-  dervify = import ../packages/dervify.nix {inherit pkgs;};
+  common = import ../../packages/common.nix {inherit pkgs pkgs-stable;};
+  darwin = import ../../packages/darwin.nix {inherit pkgs pkgs-stable;};
+  dervify = import ../../packages/darwin-dmg.nix {inherit pkgs;};
   notion = dervify rec {
     pname = "Notion";
     # renovate: datasource=notion-releases depName=Notion
@@ -19,8 +20,8 @@
   };
   additionalPackages = with pkgs; [mas notion];
 in {
-  environment.systemPackages = common.commonPackages ++ additionalPackages;
-  imports = [./common.nix];
+  environment.systemPackages = common.basePackages ++ darwin.darwinPackages ++ additionalPackages;
+  imports = [../../modules/darwin/common.nix];
 
   system = {
     defaults = {

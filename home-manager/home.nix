@@ -11,9 +11,15 @@
     ./modules/zsh.nix
     ./modules/tmux.nix
     ./modules/alacritty.nix
+    ./modules/darwin.nix
+    ./modules/linux.nix
   ];
+
   home.username = "tkhalil";
-  home.homeDirectory = "/Users/tkhalil";
+  home.homeDirectory =
+    if pkgs.stdenv.isDarwin
+    then "/Users/${config.home.username}"
+    else "/home/${config.home.username}";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -111,16 +117,8 @@
     gpg.enable = true;
   };
   services = {
-    gpg-agent = {
-      enable = true;
-      enableExtraSocket = true;
-      enableSshSupport = true;
-      pinentry = {
-        package = pkgs.pinentry_mac;
-      };
-      defaultCacheTtl = 34560000;
-      maxCacheTtl = 34560000;
-    };
+    # gpg-agent configuration moved to platform-specific modules
+    # (modules/darwin.nix and modules/linux.nix)
     syncthing = {
       enable = true;
       #user = "tkhalil";

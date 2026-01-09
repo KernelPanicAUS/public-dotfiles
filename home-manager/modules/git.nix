@@ -49,7 +49,7 @@
       rebase.autoStash = true;
       status.submoduleSummary = true;
       init.defaultBranch = "main";
-      init.templateDir = "/Users/tkhalil/.git-template";
+      init.templateDir = "${config.home.homeDirectory}/.git-template";
       credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
     };
     ignores = [
