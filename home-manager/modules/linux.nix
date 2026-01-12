@@ -26,9 +26,9 @@
         };
 
         startup = [
-          { command = "dex --autostart --environment i3"; notification = false; }
-          { command = "xss-lock --transfer-sleep-lock -- i3lock --nofork"; notification = false; }
-          { command = "nm-applet"; notification = false; }
+          { command = "${pkgs.dex}/bin/dex --autostart --environment i3"; notification = false; }
+          { command = "${pkgs.xss-lock}/bin/xss-lock --transfer-sleep-lock -- i3lock --nofork"; notification = false; }
+          { command = "${pkgs.networkmanagerapplet}/bin/nm-applet"; notification = false; }
         ];
 
         keybindings = lib.mkOptionDefault {
@@ -125,7 +125,7 @@
 
         bars = [
           {
-            statusCommand = "i3status";
+            statusCommand = "${pkgs.i3status}/bin/i3status";
           }
         ];
       };

@@ -2122,40 +2122,6 @@ gtk-titlebar = true
 # title bar, or you can switch tabs with keybinds.
 gtk-tabs-location = top
 
-# Determines the appearance of the top and bottom bars when using the
-# Adwaita tab bar. This requires `gtk-adwaita` to be enabled (it is
-# by default).
-# 
-# Valid values are:
-# 
-#  * `flat` - Top and bottom bars are flat with the terminal window.
-#  * `raised` - Top and bottom bars cast a shadow on the terminal area.
-#  * `raised-border` - Similar to `raised` but the shadow is replaced with a
-#    more subtle border.
-# 
-# Changing this value at runtime will only affect new windows.
-adw-toolbar-style = raised
-
-# If `true` (default), then the Ghostty GTK tabs will be "wide." Wide tabs
-# are the new typical Gnome style where tabs fill their available space.
-# If you set this to `false` then tabs will only take up space they need,
-# which is the old style.
-gtk-wide-tabs = true
-
-# If `true` (default), Ghostty will enable Adwaita theme support. This
-# will make `window-theme` work properly and will also allow Ghostty to
-# properly respond to system theme changes, light/dark mode changing, etc.
-# This requires a GTK4 desktop with a GTK4 theme.
-# 
-# If you are running GTK3 or have a GTK3 theme, you may have to set this
-# to false to get your theme picked up properly. Having this set to true
-# with GTK3 should not cause any problems, but it may not work exactly as
-# expected.
-# 
-# This configuration only has an effect if Ghostty was built with
-# Adwaita support.
-gtk-adwaita = true
-
 # If `true` (default), applications running in the terminal can show desktop
 # notifications using certain escape sequences such as OSC 9 or OSC 777.
 desktop-notifications = true

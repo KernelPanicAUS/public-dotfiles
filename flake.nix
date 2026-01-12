@@ -112,7 +112,7 @@
         inherit system;
         specialArgs = {
           inherit self user;
-          pkgs-stable = mkPkgsStable system;
+        #  pkgs = mkPkgs system;
         };
         modules = [
           ./hosts/nixos/${systemName}.nix
