@@ -56,18 +56,23 @@
     user = "tkhalil";
 
     # Helper: Generate per-system pkgs
-    mkPkgs = system: import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
+    mkPkgs = system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
-    mkPkgsStable = system: import nixpkgs-stable {
-      inherit system;
-      config.allowUnfree = true;
-    };
+    mkPkgsStable = system:
+      import nixpkgs-stable {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
     # Helper: Build Darwin system
-    mkDarwinSystem = { systemName, system ? "aarch64-darwin" }:
+    mkDarwinSystem = {
+      systemName,
+      system ? "aarch64-darwin",
+    }:
       nix-darwin.lib.darwinSystem {
         inherit system;
         specialArgs = {
@@ -100,19 +105,22 @@
             };
 
             home-manager.users.${user} = {
-              imports = [ ./home-manager/home.nix ];
+              imports = [./home-manager/home.nix];
             };
           }
         ];
       };
 
     # Helper: Build NixOS system
-    mkNixOSSystem = { systemName, system ? "x86_64-linux" }:
+    mkNixOSSystem = {
+      systemName,
+      system ? "x86_64-linux",
+    }:
       nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {
           inherit self user;
-        #  pkgs = mkPkgs system;
+          #  pkgs = mkPkgs system;
         };
         modules = [
           ./hosts/nixos/${systemName}.nix
@@ -123,7 +131,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.${user} = {
-              imports = [ ./home-manager/home.nix ];
+              imports = [./home-manager/home.nix];
             };
           }
         ];
@@ -133,8 +141,8 @@
     # $ darwin-rebuild build --flake .#uni
     # $ darwin-rebuild build --flake .#trv4129-3
     darwinConfigurations = {
-      "uni" = mkDarwinSystem { systemName = "uni"; };
-      "trv4129-3" = mkDarwinSystem { systemName = "trv4129-3"; };
+      "uni" = mkDarwinSystem {systemName = "uni";};
+      "trv4129-3" = mkDarwinSystem {systemName = "trv4129-3";};
     };
 
     # Build nixos flake using:

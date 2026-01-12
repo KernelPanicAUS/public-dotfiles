@@ -9,6 +9,7 @@
   common = import ../../packages/common.nix {inherit pkgs;};
   linux = import ../../packages/linux.nix {inherit pkgs;};
   host = with pkgs; [
+  python3
     wget
     alejandra
     neovim
@@ -49,4 +50,28 @@ in {
 
   # Time zone specific to this host
   time.timeZone = "Europe/Berlin";
+
+  # Enable laptop power management
+  services.tlp.enable = true;
+
+  # Compositor to prevent screen tearing in i3
+  services.picom = {
+    enable = true;
+    backend = "glx";
+    vSync = true;
+    settings = {
+      # Reduce input lag
+      unredir-if-possible = true;
+      # Better performance for Intel GPUs
+      glx-no-stencil = true;
+      glx-no-rebind-pixmap = true;
+    };
+  };
+
+  # Fonts for polybar and system
+  fonts.packages = with pkgs; [
+    font-awesome
+    dejavu_fonts
+    nerd-fonts.symbols-only
+  ];
 }

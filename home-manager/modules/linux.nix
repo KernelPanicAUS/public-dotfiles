@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # Linux-specific home-manager configuration
   # Only applies when running on Linux
 
@@ -9,7 +13,7 @@
       enable = true;
       enableExtraSocket = true;
       enableSshSupport = true;
-      pinentry.package = pkgs.pinentry-gnome3;  # GUI pinentry for X11
+      pinentry.package = pkgs.pinentry-gnome3; # GUI pinentry for X11
       defaultCacheTtl = 34560000;
       maxCacheTtl = 34560000;
     };
@@ -21,14 +25,31 @@
         modifier = "Mod4";
 
         fonts = {
-          names = [ "DejaVu Sans Mono" ];
+          names = ["DejaVu Sans Mono"];
           size = 10.0;
         };
-
+        
         startup = [
-          { command = "${pkgs.dex}/bin/dex --autostart --environment i3"; notification = false; }
-          { command = "${pkgs.xss-lock}/bin/xss-lock --transfer-sleep-lock -- i3lock --nofork"; notification = false; }
-          { command = "${pkgs.networkmanagerapplet}/bin/nm-applet"; notification = false; }
+          {
+            command = "exec --no-startup-id ${pkgs.feh}/bin/feh --bg-scale ${config.home.homeDirectory}/Downloads/cute-town.png";
+            notification = false;
+          }
+          {
+            command = "${pkgs.clipmenu}/bin/clipmenud";
+            notification = false;
+          }
+          {
+            command = "${pkgs.dex}/bin/dex --autostart --environment i3";
+            notification = false;
+          }
+          {
+            command = "${pkgs.xss-lock}/bin/xss-lock --transfer-sleep-lock -- i3lock --nofork";
+            notification = false;
+          }
+          {
+            command = "${pkgs.networkmanagerapplet}/bin/nm-applet";
+            notification = false;
+          }
         ];
 
         keybindings = lib.mkOptionDefault {
@@ -123,11 +144,205 @@
           modifier = "Mod4";
         };
 
-        bars = [
-          {
-            statusCommand = "${pkgs.i3status}/bin/i3status";
-          }
-        ];
+        bars = [];
+      };
+    };
+
+    # Polybar configuration
+    services.polybar = {
+      enable = true;
+      package = pkgs.polybar.override {
+        i3Support = true;
+        pulseSupport = true;
+      };
+      script = "polybar main &";
+
+      settings = {
+        "bar/main" = {
+          width = "100%";
+          height = 30;
+          radius = 0;
+          fixed-center = true;
+
+          background = "#222";
+          foreground = "#dfdfdf";
+
+          line-size = 3;
+          line-color = "#f00";
+
+          border-size = 0;
+          border-color = "#00000000";
+
+          padding-left = 0;
+          padding-right = 2;
+
+          module-margin-left = 1;
+          module-margin-right = 2;
+
+          font-0 = "DejaVu Sans Mono:size=10;1";
+          font-1 = "Symbols Nerd Font Mono:size=12;2";
+          font-2 = "Font Awesome 7 Free:style=Solid:size=10;1";
+
+          modules-left = "i3";
+          modules-center = "date";
+          modules-right = "filesystem cpu memory pulseaudio network battery tray";
+
+          cursor-click = "pointer";
+          cursor-scroll = "ns-resize";
+        };
+
+        "module/i3" = {
+          type = "internal/i3";
+          format = "<label-state> <label-mode>";
+          index-sort = true;
+          wrapping-scroll = false;
+
+          label-mode-padding = 2;
+          label-mode-foreground = "#000";
+          label-mode-background = "#ffb52a";
+
+          # focused = Active workspace on focused monitor
+          label-focused = "%index%";
+          label-focused-background = "#285577";
+          label-focused-underline = "#4c7899";
+          label-focused-padding = 2;
+
+          # unfocused = Inactive workspace on any monitor
+          label-unfocused = "%index%";
+          label-unfocused-padding = 2;
+
+          # visible = Active workspace on unfocused monitor
+          label-visible = "%index%";
+          label-visible-background = "#5f676a";
+          label-visible-underline = "#5f676a";
+          label-visible-padding = 2;
+
+          # urgent = Workspace with urgency hint set
+          label-urgent = "%index%";
+          label-urgent-background = "#900000";
+          label-urgent-padding = 2;
+        };
+
+        "module/date" = {
+          type = "internal/date";
+          interval = 5;
+
+          date = "%Y-%m-%d";
+          date-alt = "%A, %B %d, %Y";
+
+          time = "%H:%M";
+          time-alt = "%H:%M:%S";
+
+          format-prefix = " ";
+          format-prefix-foreground = "#ffb52a";
+          format-underline = "#0a6cf5";
+
+          label = "%date% %time%";
+        };
+
+        "module/pulseaudio" = {
+          type = "internal/pulseaudio";
+
+          format-volume = "<label-volume>";
+          format-volume-prefix = "%{T2}󰕾 %{T-}";
+          format-volume-prefix-foreground = "#5fb3f5";
+          label-volume = "%percentage%%";
+          label-volume-foreground = "#dfdfdf";
+
+          format-muted-prefix = "%{T2}󰖁 %{T-}";
+          format-muted-prefix-foreground = "#666";
+          label-muted = "muted";
+          label-muted-foreground = "#666";
+
+          click-right = "pavucontrol";
+        };
+
+        "module/battery" = {
+          type = "internal/battery";
+          battery = "BAT0";
+          adapter = "AC";
+          full-at = 98;
+
+          format-charging = "<label-charging>";
+          format-charging-prefix = "%{T2}󰂄 %{T-}";
+          format-charging-prefix-foreground = "#a3be8c";
+          format-charging-underline = "#a3be8c";
+          label-charging = "%percentage%%";
+
+          format-discharging = "<label-discharging>";
+          format-discharging-prefix = "%{T2}󰁹 %{T-}";
+          format-discharging-prefix-foreground = "#ebcb8b";
+          format-discharging-underline = "#ebcb8b";
+          label-discharging = "%percentage%%";
+
+          format-full-prefix = "%{T2}󰁹 %{T-}";
+          format-full-prefix-foreground = "#a3be8c";
+          format-full-underline = "#a3be8c";
+        };
+
+        "module/cpu" = {
+          type = "internal/cpu";
+          interval = 2;
+          format-prefix = "%{T2}󰻠 %{T-}";
+          format-prefix-foreground = "#bf616a";
+          format-underline = "#bf616a";
+          label = "%percentage:2%%";
+        };
+
+        "module/memory" = {
+          type = "internal/memory";
+          interval = 2;
+          format-prefix = "%{T2}󰍛 %{T-}";
+          format-prefix-foreground = "#88c0d0";
+          format-underline = "#88c0d0";
+          label = "%percentage_used%%";
+        };
+
+        "module/network" = {
+          type = "internal/network";
+          interface-type = "wired";
+          interval = 3;
+
+          format-connected = "<label-connected>";
+          format-connected-prefix = "%{T2}󰈀 %{T-}";
+          format-connected-prefix-foreground = "#a3be8c";
+          format-connected-underline = "#a3be8c";
+          label-connected = "%local_ip%";
+
+          format-disconnected = "<label-disconnected>";
+          format-disconnected-prefix = "%{T2}󰈂 %{T-}";
+          format-disconnected-prefix-foreground = "#666";
+          label-disconnected = "down";
+          format-disconnected-foreground = "#666";
+        };
+
+        "module/filesystem" = {
+          type = "internal/fs";
+          interval = 25;
+
+          mount-0 = "/";
+
+          format-mounted = "<label-mounted>";
+          format-mounted-prefix = "%{T2}󰋊 %{T-}";
+          format-mounted-prefix-foreground = "#b48ead";
+          label-mounted = "%percentage_used%%";
+          label-mounted-underline = "#b48ead";
+          label-unmounted = "";
+        };
+
+        "module/tray" = {
+          type = "internal/tray";
+          tray-spacing = 8;
+        };
+
+        "settings" = {
+          screenchange-reload = true;
+        };
+
+        "global/wm" = {
+          margin-top = 5;
+          margin-bottom = 5;
+        };
       };
     };
 
@@ -138,6 +353,7 @@
       xss-lock
       brightnessctl
       ranger
+      pavucontrol  # For polybar volume right-click
     ];
   };
 }

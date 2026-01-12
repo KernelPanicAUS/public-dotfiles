@@ -51,7 +51,16 @@
   };
 
   # Touchpad support
-  services.libinput.enable = true;
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      naturalScrolling = true;
+      tapping = true;
+    };
+  };
+ 
+  # Clipboard
+  services.clipmenu.enable = true;
 
   # OpenSSH
   services.openssh.enable = true;
@@ -69,6 +78,7 @@
     vim
     wget
     git
+	nix-output-monitor
   ];
 
   # System state version
