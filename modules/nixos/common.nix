@@ -23,23 +23,8 @@
   # X11 windowing system
   services.xserver = {
     enable = true;
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        i3status
-        i3lock
-        i3blocks
-      ];
-    };
     xkb.layout = "us";
   };
-
-  # Display manager
-  services.displayManager = {
-    defaultSession = "none+i3";
-  };
-  services.xserver.displayManager.lightdm.enable = true;
 
   # Printing
   services.printing.enable = true;
@@ -59,9 +44,6 @@
     };
   };
  
-  # Clipboard
-  services.clipmenu.enable = true;
-
   # OpenSSH
   services.openssh.enable = true;
 

@@ -74,4 +74,31 @@ in {
     dejavu_fonts
     nerd-fonts.symbols-only
   ];
+
+  # i3 window manager (system level)
+  services.xserver.windowManager.i3 = {
+    enable = true;
+    extraPackages = with pkgs; [
+      dmenu
+      i3status
+      i3lock
+      i3blocks
+    ];
+  };
+
+  # Display manager
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
+  services.xserver.displayManager.lightdm.enable = true;
+
+  # Clipboard manager (system level)
+  services.clipmenu.enable = true;
+
+  # Import i3/polybar home-manager configuration for this machine
+  home-manager.users.${user} = {
+    imports = [
+      ../../home-manager/modules/i3-desktop.nix
+    ];
+  };
 }
