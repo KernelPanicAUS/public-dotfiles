@@ -20,7 +20,6 @@ let
     git-filter-repo
     delta
     killall
-    neofetch
     openssh
     pandoc
     sqlite
@@ -58,6 +57,8 @@ let
     kubectl
     k9s
     kubeconform
+    packer
+_1password-cli
     tflint
     pre-commit
     terraform-ls
@@ -79,9 +80,11 @@ let
 
     # Node.js development tools
     fzf
-    nodePackages.typescript-language-server
-    nodePackages.nodemon
     nodejs
+
+    # Go development tools
+    gopls
+    golangci-lint-langserver
 
     # Source code management, Git, GitHub tools
     gh
@@ -111,6 +114,7 @@ let
     nixci
     alejandra
     nixfmt-classic
+    nix-output-monitor
 
     # Python packages
     black

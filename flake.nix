@@ -104,6 +104,7 @@
               home = "/Users/${user}";
             };
 
+            home-manager.backupFileExtension = "backup";
             home-manager.users.${user} = {
               imports = [./home-manager/home.nix];
             };

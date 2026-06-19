@@ -9,6 +9,13 @@
     autosuggestion.enable = true;
     oh-my-zsh.enable = true;
     oh-my-zsh.plugins = ["git" "gcloud" "kubectl" "git-prompt" "kube-ps1"];
+    profileExtra = ''
+      # Added by Toolbox App
+      export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+
+      # Added by OrbStack: command-line tools and integration
+      source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+    '';
     plugins = [
       {
         name = "zsh-autosuggestions";
@@ -70,6 +77,19 @@
       bindkey "^[[1;3D" backward-word
       #alt + delete delete whole word
       bindkey "\e\x7f" backward-kill-word
+
+      # Rancher kubeconfig initialization
+      rancher-kubeconfig-init() {
+        local configs_dir="$(${pkgs.coreutils}/bin/mktemp -d)"
+        local tmp_kubeconfig_path
+        while read -r cluster_name cluster_id
+        do
+          local kubeconfig_file="$configs_dir/$cluster_name.yaml"
+          ${pkgs.rancher}/bin/rancher cluster kubeconfig "$cluster_id" | ${pkgs.yq-go}/bin/yq 'del(.current-context) | .contexts[0].name |= "rancher-" + .' > "$kubeconfig_file"
+          tmp_kubeconfig_path="$kubeconfig_file:$tmp_kubeconfig_path"
+        done < <(${pkgs.rancher}/bin/rancher cluster ls --format 'rancher-{{.Name}} {{.ID}}')
+        KUBECONFIG="$tmp_kubeconfig_path" ${pkgs.kubectl}/bin/kubectl config view --flatten
+      }
     '';
   };
 }
