@@ -19,7 +19,7 @@ jobs:
           extra-experimental-features = nix-command flakes
 
     - name: Enable cached builds
-      uses: DeterminateSystems/magic-nix-cache-action@def9f5a5c6a6b8751c0534e8813a5d0ad2635660 # v11
+      uses: DeterminateSystems/magic-nix-cache-action@908b263ff629f4cc17666315b7fd3ec127c6244d # v14
 
     - name: Check flake inputs
       run: nix flake check
