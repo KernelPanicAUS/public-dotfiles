@@ -113,7 +113,6 @@ _1password-cli
     nixpkgs-fmt
     nixci
     alejandra
-    nixfmt-classic
     nix-output-monitor
 
     # Python packages

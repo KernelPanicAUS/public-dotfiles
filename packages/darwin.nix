@@ -12,7 +12,7 @@ let
 
   orbstack = dervify rec {
     pname = "Orbstack";
-    version = "2.2.0";
+    version = "2.2.1";
     url = "https://orbstack.dev/download/stable/latest/arm64";
     hash = "sha256-W8FxnDyYfExgxlvp/dZbRzCZDhaX7Byxwz5rujG/krU=";
     useHdiutil = true;
@@ -28,9 +28,9 @@ let
 
   _1password = dervify rec {
     pname = "1password";
-    version = "8.12.22";
+    version = "8.12.26";
     url = "https://downloads.1password.com/mac/1Password-${version}-aarch64.zip";
-    hash = "sha256-Rbac0JcB2kbH6EfEGkuKwhaIW0Bgkhyw7olSjqe1euE=";
+    hash = "sha256-bZD8LCLTGXRpNF/FqoSHvI69pquAcQGa1mdagWypgDU=";
     format = "zip";
   };
 

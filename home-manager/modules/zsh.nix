@@ -9,6 +9,11 @@
     autosuggestion.enable = true;
     oh-my-zsh.enable = true;
     oh-my-zsh.plugins = ["git" "gcloud" "kubectl" "git-prompt" "kube-ps1"];
+    # Completions live in the immutable Nix store, so compinit's ownership
+    # audit (compaudit) is wasted work — ~55ms / ~45% of tunable startup time.
+    oh-my-zsh.extraConfig = ''
+      ZSH_DISABLE_COMPFIX=true
+    '';
     profileExtra = ''
       # Added by Toolbox App
       export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
@@ -24,15 +29,6 @@
           repo = "zsh-autosuggestions";
           rev = "v0.7.0";
           sha256 = "sha256-KLUYpUu4DHRumQZ3w59m9aTW6TBKMCXl2UcKi4uMd7w=";
-        };
-      }
-      {
-        name = "zsh-256color";
-        src = pkgs.fetchFromGitHub {
-          owner = "chrissicool";
-          repo = "zsh-256color";
-          rev = "9d8fa1015dfa895f2258c2efc668bc7012f06da6";
-          sha256 = "sha256-Qd9pjDSQk+kz++/UjGVbM4AhAklc1xSTimLQXxN57pI=";
         };
       }
       {
